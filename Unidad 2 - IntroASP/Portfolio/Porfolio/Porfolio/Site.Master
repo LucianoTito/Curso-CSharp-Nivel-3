@@ -1,0 +1,72 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="Porfolio.Site1" %>
+
+<!DOCTYPE html>
+<html lang="es">
+<head runat="server">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Luciano</title>
+    
+    <link href="~/src/icons/favicoportfolio.ico" rel="shortcut icon" type="image/x-icon" runat="server" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style> @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap'); </style>
+    
+       <link runat="server" href="~/src/css/style.css" rel="stylesheet" type="text/css" />
+
+    <asp:ContentPlaceHolder ID="head" runat="server" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        
+        <header class="contenedor-header">      
+            <div class="space space-1"></div>
+            <div class="space space-2"></div>
+            <div class="space space-3"></div> 
+            <nav id="nav" class="main-nav">
+                <ul class="main-menu" id="main-menu">
+                    <li class="main-menu__item"><a class="main-menu__link" href="Default.aspx">Home</a></li>
+                    <li class="main-menu__item"><a class="main-menu__link" href="Default.aspx#acerca-de-mi">Acerca de mí</a></li>
+                    <li class="main-menu__item"><a class="main-menu__link" href="Default.aspx#mis-habilidades">Mis Habilidades</a></li>      
+                    <li class="main-menu__item"><a class="main-menu__link" href="Default.aspx#portfolio">Portafolio</a></li>
+                    <li class="main-menu__item"><a class="main-menu__link" href="Contacto.aspx">Contacto</a></li>
+                    
+                    <button id="button__dark-mode" title="change__mode-dark-light" type="button">
+                        <i class="dark-mode-icon bx bx-moon"></i>
+                        <i class="light-mode-icon bx bx-sun"></i>
+                    </button>
+                    
+                    <div id="flags" class="flags">
+                        <div class="flags__item" data-language="es">
+                            <img src="src/icons/es-flag.svg" alt="spain flag">
+                        </div>
+                        <div class="flags__item" data-language="en">
+                            <img src="src/icons/us-flag.svg" alt="USA flag">
+                        </div>
+                    </div>
+                </ul>
+            </nav>
+            <div class="nav-responsive">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </header>
+
+        <main>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </main>
+
+        <footer>    
+            <h5 data-section="footer" data-value="footer-up" onclick="scrollToTop()">Subir</h5>
+            <button onclick="scrollToTop()" class="arrow_btn" title="arrow__btn" type="button">
+                <i class='bx bxs-up-arrow-circle'></i>
+            </button>
+        </footer>
+        
+        <a class= "link__git" href="https://github.com/LucianoTito/Portafolio-7" target="blank">LINK DEL CÓDIGO <i class='bx bxl-github icon'></i></a>
+
+        <script src="/src/js/script.js"></script>       
+    </form>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{
+  "main-menu": {
+    "home": "Home",
+    "acerca-de-mi": "Acerca de mí",
+    "mis-habilidades": "Mis habilidades",
+    "portafolio": "Portafolio",
+    "contacto": "Contacto"
+  },
+  "homes": {
+    "profesion": "Desarrollador Backend | .NET"
+  },
+  "acerca-de-mi": {
+    "acerca-de-mi__title": "Acerca de mí",
+    "description": "Soy un desarrollador de 33 años con formación en C++ y bases sólidas en algoritmos y estructuras de datos gracias a mis estudios en la Tecnicatura Universitaria en Programación (UTN). Actualmente me especializo en el ecosistema .NET (C#, Windows Forms, ASP.NET) con foco en desarrollo Backend, arquitectura en capas y bases de datos SQL Server. Además, cuento con experiencia previa desarrollando aplicaciones web Full Stack con React y Node.js, lo que me permite tener una visión integral del ciclo de vida del software. Busco mi primera oportunidad profesional para aportar valor creando soluciones robustas y escalables."
+  },
+  "mis-habilidades": {
+    "titulo__seccion": "Mis habilidades"
+  },
+  "portafolio": {
+    "portfolio-title": "Portafolio",
+    "random_phrases": "Tienda PowerGrip"
+  },
+  "contacto": {
+    "titulo-seccion": "Contacto",
+    "contact-number": "Número celular",
+    "form-seccion": "Si quieres dejarme algún mensaje...",
+    "name": "Nombre",
+    "phone": "Ingresa tu teléfono",
+    "email": "Ingresa tu email",
+    "message": "Mensaje",
+    "contact-description": "Escribe aquí... Cuando oprimas enviar, se abrirá una ventana de confirmación, hacer click en: 'no soy un robot' para confirmar el envío del mensaje.",
+    "button": "Enviar"
+  },
+  "footer": {
+    "footer-up": "Subir",
+    "link__git": "LINK DEL CÓDIGO"
+  }
+}
