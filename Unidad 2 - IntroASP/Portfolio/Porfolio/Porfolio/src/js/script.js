@@ -119,3 +119,35 @@ const generateSpaceLayer = (size, selector, totalStars, duration) => {
 generateSpaceLayer("2px", ".space-1", 350, "25s");
 generateSpaceLayer("2.5px", ".space-2", 200, "20s");
 generateSpaceLayer("4px", ".space-3", 25, "15s");
+
+/* ==========================================
+VALIDACIÓN DEL FORMULARIO DE CONTACTO
+========================================== */
+const sendBtn = document.querySelector(".send__input");
+
+// Solo ejecutamos la validación si el botón existe (es decir, si estamos en Contacto.aspx)
+if (sendBtn) {
+    sendBtn.addEventListener("click", (e) => {
+        // Obtenemos los valores de los campos eliminando espacios en blanco al inicio y final
+        const nombre = document.getElementById("nombre").value.trim();
+        const telefono = document.getElementById("telefono").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const mensaje = document.getElementById("mensaje").value.trim();
+
+        // Validamos que ningún campo esté vacío
+        if (nombre === "" || telefono === "" || email === "" || mensaje === "") {
+            e.preventDefault(); // Evitamos que la página intente hacer cualquier acción
+            alert("⚠️ Por favor, completa todos los campos antes de enviar el mensaje.");
+        } else {
+            // Si todo está bien, le mostramos un mensaje de éxito por ahora
+            e.preventDefault(); // Evitamos recargar la página solo por la maqueta
+            alert("✅ ¡Excelente! Los datos están completos. (Aquí conectaremos con C# próximamente)");
+
+            // Opcional: Limpiamos los campos después de "enviar"
+            document.getElementById("nombre").value = "";
+            document.getElementById("telefono").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("mensaje").value = "";
+        }
+    });
+}
