@@ -13,7 +13,7 @@
         <h1 data-section="homes" data-value="profesion">Desarrollador Backend | .NET</h1>
         <div class="redes">
             <a title="linkedin__link" href="https://www.linkedin.com/in/luciano-facundo-tito-cedr%C3%B3n-093041261/" target="_blank"><i class='bx bxl-linkedin' ></i></a>
-            <a title="cv__link" href="https://drive.google.com/file/d/1xFue1NPQ-sB7N1SBVQtz8FpPEgzigW7X/view?usp=sharing" target="_blank"><i class='bx bxs-file-pdf'></i></a>
+            <a title="cv__link" href="https://drive.google.com/file/d/1vggvUspLHSqdArxH_MywKzr58j7AZFU9/view?usp=sharing" target="_blank"><i class='bx bxs-file-pdf'></i></a>
             <a title="gitHub__link" href="https://github.com/LucianoTito" target="_blank"><i class='bx bxl-github'></i></a>
         </div>
     </section>
