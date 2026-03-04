@@ -64,7 +64,7 @@
             </button>
         </footer>
         
-        <a class= "link__git" href="https://github.com/LucianoTito/Portafolio-7" target="blank">LINK DEL CÓDIGO <i class='bx bxl-github icon'></i></a>
+        <a class= "link__git" href="https://github.com/LucianoTito/Curso-CSharp-Nivel-3/tree/main/Unidad%202%20-%20IntroASP/Portfolio/Porfolio/Porfolio" target="blank">LINK DEL CÓDIGO <i class='bx bxl-github icon'></i></a>
 
         <script src="/src/js/script.js"></script>       
     </form>
