@@ -22,8 +22,7 @@
         <div class="contenido-seccion">
             <h2 data-section="acerca-de-mi" data-value="acerca-de-mi__title">Acerca de mí</h2>
             <p data-section="acerca-de-mi" data-value="description" class="description">
-                Soy un desarrollador con formación en C++ y bases sólidas en algoritmos y estructuras de datos gracias a mis estudios en la Tecnicatura Universitaria en Programación (UTN). Actualmente me especializo en el ecosistema .NET (C#, Windows Forms, ASP.NET) con foco en desarrollo Backend, arquitectura en capas y bases de datos SQL Server. 
-                Además, cuento con experiencia previa desarrollando aplicaciones web Full Stack con React y Node.js, lo que me permite tener una visión integral del ciclo de vida del software. Busco mi primera oportunidad profesional para aportar valor creando soluciones robustas y escalables.
+                Soy un desarrollador con formación en C++ y bases sólidas en algoritmos y estructuras de datos gracias a mis estudios en la Tecnicatura Universitaria en Programación (UTN). Actualmente me especializo en el ecosistema .NET (C#, Windows Forms, ASP.NET) con foco en desarrollo Backend, arquitectura en capas y bases de datos SQL Server. Además, cuento con experiencia previa desarrollando aplicaciones web Full Stack con React y Node.js, lo que me permite tener una visión integral del ciclo de vida del software. Busco mi primera oportunidad profesional para aportar valor creando soluciones robustas y escalables.
             </p>
         </div>
     </section>
