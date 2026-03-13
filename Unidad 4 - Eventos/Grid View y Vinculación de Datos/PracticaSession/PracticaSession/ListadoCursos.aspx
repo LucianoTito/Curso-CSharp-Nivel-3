@@ -3,7 +3,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <div style="padding: 20px;">   
+    <div style="padding: 21px;">   
 
         
         <h2>📚 Listado Completo de Cursos Disponibles</h2>
