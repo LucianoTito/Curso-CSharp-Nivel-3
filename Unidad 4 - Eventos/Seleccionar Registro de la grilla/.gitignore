@@ -1,0 +1,52 @@
+# Archivos de configuración de usuario
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Carpetas de Visual Studio
+.vs/
+.vscode/
+
+# Archivos de compilación
+bin/
+obj/
+Debug/
+Release/
+
+# Archivos de publicación
+.publish/
+*.pubxml
+*.pubxml.user
+
+# Archivos de cache y temporales
+*.vsidx
+*.dbmdl
+*.bak
+*.log
+
+# Archivos de configuración locales
+*.config
+*.local
+*.cache
+*.pdb
+
+# Paquetes NuGet
+*.nupkg
+packages/
+*.snupkg
+
+# Archivos de IIS
+_IISExpress/
+*.vspscc
+*.vssscc
+
+# Archivos de test y cobertura
+TestResults/
+*.coverage
+*.coveragexml
+
+# Archivos de estilo y configuración
+*.swp
+*.tmp
+*.temp
