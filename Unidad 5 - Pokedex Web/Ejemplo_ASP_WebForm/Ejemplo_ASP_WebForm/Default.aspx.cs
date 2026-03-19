@@ -28,10 +28,28 @@ namespace Ejemplo_ASP_WebForm
                 //LLeno la propiedad con los datos obtenidos del método ObtenerPokemones() de la clase PokemonNegocio, que devuelve una lista de objetos Pokemon
 
                 ListaPokemon= negocio.ObtenerPokemonesConSP();
+
+                //Le asigno la lista de pokemones al control Repeater para que se muestre en la interfaz, y luego llamo al método DataBind() para enlazar los datos con el control
+                repPokemons.DataSource = ListaPokemon;
+                repPokemons.DataBind();
             }
 
 
 
+        }
+
+        // 3. Este es el evento que dispara el botón de CADA tarjeta
+        protected void btnEjemplo_Click(object sender, EventArgs e)
+        {
+            // A. ¿Quién disparó el evento? El 'sender' es el botón que el usuario tocó 
+            // B. Como llega como un objeto genérico (object), lo transformamos (casteo) a Button 
+            // C. Leemos la propiedad CommandArgument, que es donde guardamos el ID en el HTML 
+
+            string idPokemonSeleccionado = ((Button)sender).CommandArgument;
+
+            // Por ahora, solo lo mostramos en la URL para verificar que funciona, 
+            // pero acá podrías guardarlo en Session, buscar en la base de datos, etc.
+            Response.Redirect("DetallePokemon.aspx?id=" + idPokemonSeleccionado);
         }
     }
 }
