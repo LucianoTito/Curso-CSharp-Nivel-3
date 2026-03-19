@@ -53,6 +53,15 @@ namespace Negocio
             comando.CommandText = consulta;
         }
 
+        public void setearProcedimiento (string procedimiento)
+        {
+            //Le decimos a SQL que el comando que vamos a ejecutar es un procedimiento almacenado (STORE PROCEDURE), no una consulta de texto plano
+            comando.CommandType = System.Data.CommandType.StoredProcedure;
+
+            //Le pasamos el nombre del procedimiento almacenado que queremos ejecutar (ej: "SP_ObtenerPokemon")
+            comando.CommandText = procedimiento;
+        }
+
         // Método que ejecuta la lectura
         public void EjecutarLectura()
         {

@@ -98,6 +98,53 @@ namespace Negocio
             }
         }
 
+        public List<Pokemon> ObtenerPokemonesConSP()
+        {
+            List<Pokemon> listaPokemons = new List<Pokemon>();
+            Acceso_a_datos datos = new Acceso_a_datos();
+
+            try
+            {
+                datos.setearProcedimiento("SP_ListarPokemons");
+                datos.EjecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Pokemon aux = new Pokemon();
+
+                    // 1. Instanciamos los objetos anidados ANTES de darles valor
+                    aux.Tipo = new Elemento();
+                    aux.Debilidad = new Elemento();
+
+                    // 2. Mapeo seguro por NOMBRE de columna (Evita errores si cambia el SQL)
+                    if (!(datos.Lector["Id"] is DBNull)) aux.Id = (int)datos.Lector["Id"];
+                    if (!(datos.Lector["Numero"] is DBNull)) aux.Numero = (int)datos.Lector["Numero"];
+                    if (!(datos.Lector["Nombre"] is DBNull)) aux.Nombre = (string)datos.Lector["Nombre"];
+                    if (!(datos.Lector["Descripcion"] is DBNull)) aux.Descripcion = (string)datos.Lector["Descripcion"];
+                    if (!(datos.Lector["UrlImagen"] is DBNull)) aux.UrlImagen = (string)datos.Lector["UrlImagen"];
+
+                    // Mapeo de los Elementos (Tipo y Debilidad)
+                    if (!(datos.Lector["Tipo"] is DBNull)) aux.Tipo.Descripcion = (string)datos.Lector["Tipo"];
+                    if (!(datos.Lector["IdTipo"] is DBNull)) aux.Tipo.Id = (int)datos.Lector["IdTipo"];
+
+                    if (!(datos.Lector["Debilidad"] is DBNull)) aux.Debilidad.Descripcion = (string)datos.Lector["Debilidad"];
+                    if (!(datos.Lector["IdDebilidad"] is DBNull)) aux.Debilidad.Id = (int)datos.Lector["IdDebilidad"];
+
+                    listaPokemons.Add(aux);
+                }
+
+                return listaPokemons;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al obtener pokemones con SP: " + ex.Message);
+                throw;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
         public void AgregarPokemon(Pokemon nuevoPokemon)
         {
             Acceso_a_datos datos = new Acceso_a_datos();
