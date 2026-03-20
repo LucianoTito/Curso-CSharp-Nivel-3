@@ -13,13 +13,13 @@ namespace PokedexWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack) 
+            if (!IsPostBack)
             {
                 //Instanciamos la clase PokemonNegocio para poder usar sus métodos
                 ElementoNegocio negocio = new ElementoNegocio();
 
                 //Guardamos la lista temporalmente para no ir a la BD dos veces
-                List <Elemento> listaElementos = negocio.listar();
+                List<Elemento> listaElementos = negocio.listar();
 
                 //1. Configuro el DropDownList para mostrar los tipos de Pokemon
                 ddlTipo.DataSource = listaElementos;
@@ -32,8 +32,38 @@ namespace PokedexWeb
                 ddlDebilidad.DataValueField = "Id";
                 ddlDebilidad.DataTextField = "Descripcion";
                 ddlDebilidad.DataBind();
-            }
 
+                //3. Verifico si se recibió un ID por QueryString para cargar los datos del Pokemon a modificar
+
+                string id = Request.QueryString["id"]; //Recibo el ID por QueryString
+
+                if (id != null)
+                {
+                    //Si hay ID, nuscamos el pokemon en la BD para cargar sus datos en el formulario
+                    PokemonNegocio negocioPokemon = new PokemonNegocio();
+                    List<Pokemon> listaPokemon = negocioPokemon.ObtenerPokemonesConSP(); //Obtenemos la lista de pokemones para buscar el que coincide con el ID recibido
+
+                    //Buscamos el pokemon con el ID recibido
+                    Pokemon pokemonSeleccionado = listaPokemon.Find(x => x.Id == int.Parse(id));
+
+                    if (pokemonSeleccionado != null)
+                    {
+                        //Si encontramos el pokemon, cargamos sus datos en el formulario
+                        txtNumero.Text = pokemonSeleccionado.Numero.ToString();
+                        txtNombre.Text = pokemonSeleccionado.Nombre;
+                        txtDescripcion.Text = pokemonSeleccionado.Descripcion;
+                        txtUrlImagen.Text = pokemonSeleccionado.UrlImagen;
+
+                        //Cargamos los DropDownList con el Tipo y la Debilidad del Pokemon seleccionado
+                        ddlTipo.SelectedValue = pokemonSeleccionado.Tipo.Id.ToString();
+                        ddlDebilidad.SelectedValue = pokemonSeleccionado.Debilidad.Id.ToString();
+
+                        //Forzamos el evento de la carga de la imagen para mostrar la imagen del pokemon seleccionado
+                        txtUrlImagen_TextChanged(sender, e);
+                    }
+                }
+
+            }
         }
 
         protected void txtUrlImagen_TextChanged(object sender, EventArgs e)
@@ -64,8 +94,27 @@ namespace PokedexWeb
                 nuevo.Debilidad = new Elemento();
                 nuevo.Debilidad.Id = int.Parse(ddlDebilidad.SelectedValue);
 
-                //3.Mandamos el nuevo Pokemon al método AgregarPokemon del negocio para que se encargue de agregarlo a la BD
-                negocio.AgregarPokemonConSP(nuevo);
+
+                //Evaluamos la acción: ¿Es agregar o modificar?
+                if (Request.QueryString["id"] != null)
+                {
+                    //Si hay id en la url, es modificación
+                    //Le asignamos el ID al objeto 
+                    nuevo.Id = int.Parse(Request.QueryString["id"]);
+
+                    //llamo al método modificar
+                    negocio.ModificarPokemonConSP(nuevo);
+
+                }
+
+                else
+                {
+                    //Si NO HAY ID: Es un alta nueva
+                    //Mandamos el nuevo Pokemon al método AgregarPokemon del negocio para que se encargue de agregarlo a la BD
+                    negocio.AgregarPokemonConSP(nuevo);
+                }
+
+              
 
                 //4. Redireccionamos a la página principal para mostrar el nuevo Pokemon agregado
                 //pongo false al final para evitar un error interno de ASP.NET que dice "Error interno del servidor. El recurso solicitado ha sido asignado a una dirección URL diferente. Haga clic aquí para obtener la dirección URL y luego actualice el navegador para acceder a ella."

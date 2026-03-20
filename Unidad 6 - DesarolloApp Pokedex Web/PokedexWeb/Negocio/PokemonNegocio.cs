@@ -197,6 +197,40 @@ namespace Negocio
             }
         }
 
+        public void ModificarPokemonConSP(Pokemon pokemonModificado)
+        {
+            Acceso_a_datos datos = new Acceso_a_datos();
+            try
+            {
+                //Llamamo al procedimiento almacenado
+                datos.SetearProcedimiento("StoreModificarPokemon");
+                // Parámetros con el mismo nombre que en el SP
+                
+                datos.SetearParametro("@numero", pokemonModificado.Numero);
+                datos.SetearParametro("@nombre", pokemonModificado.Nombre);
+                datos.SetearParametro("@descripcion", pokemonModificado.Descripcion);
+                datos.SetearParametro("@idTipo", pokemonModificado.Tipo.Id);
+                datos.SetearParametro("@idDebilidad", pokemonModificado.Debilidad.Id);
+                datos.SetearParametro("@img", pokemonModificado.UrlImagen);
+
+                // Este es el parámetro vital que le dice a la base de datos CUÁL Pokémon modificar
+                datos.SetearParametro("@id", pokemonModificado.Id); // Sin este parámetro, el SP no sabría qué fila actualizar y podría modificar toda la tabla.
+
+
+                //3.Ejecutamos la acción
+                datos.EjecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al modificar pokemon con SP: " + ex.Message);
+                throw;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+
         public void ModificarPokemon(Pokemon pokemonModificado)
         {
             // 1. Instanciamos nuestra "herramienta" centralizada de conexión.
