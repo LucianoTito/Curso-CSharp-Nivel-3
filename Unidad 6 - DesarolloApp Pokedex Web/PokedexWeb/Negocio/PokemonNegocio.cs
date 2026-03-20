@@ -105,7 +105,7 @@ namespace Negocio
 
             try
             {
-                datos.setearProcedimiento("SP_ListarPokemons");
+                datos.SetearProcedimiento("SP_ListarPokemons");
                 datos.EjecutarLectura();
 
                 while (datos.Lector.Read())
@@ -159,6 +159,36 @@ namespace Negocio
             catch (Exception)
             {
 
+                throw;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+
+        public void AgregarPokemonConSP(Pokemon nuevoPokemon)
+        {
+            Acceso_a_datos datos = new Acceso_a_datos();
+            try
+            {
+                // 1.En lugar de una consulta manual, llamamos a nuestro Procedimiento Almacenado
+                datos.SetearProcedimiento("StoreAltaPokemon");
+
+                // 2. Le pasamos los parámetros EXACTAMENTE con el mismo nombre que usamos en SQL
+                datos.SetearParametro("@numero", nuevoPokemon.Numero);
+                datos.SetearParametro("@nombre", nuevoPokemon.Nombre);
+                datos.SetearParametro("@descripcion", nuevoPokemon.Descripcion);
+                datos.SetearParametro("@idTipo", nuevoPokemon.Tipo.Id);
+                datos.SetearParametro("@idDebilidad", nuevoPokemon.Debilidad.Id);
+                datos.SetearParametro("@img", nuevoPokemon.UrlImagen);
+
+                //3.Ejecuto la acción contra la base de datos
+                datos.EjecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al agregar pokemon con SP: " + ex.Message);
                 throw;
             }
             finally

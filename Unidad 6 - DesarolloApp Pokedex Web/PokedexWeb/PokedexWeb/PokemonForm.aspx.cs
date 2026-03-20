@@ -40,5 +40,48 @@ namespace PokedexWeb
         {
             imgPokemon.ImageUrl = txtUrlImagen.Text; //Asignamos el valor del TextBox txtUrl a la propiedad ImageUrl del control Image imgPokemon para que se actualice la imagen mostrada
         }
+
+        protected void btnAceptar_Click(object sender, EventArgs e)
+        {
+            try 
+            {
+                //Instanciamos un nuevo Pokemon y un PokemonNegocio para poder usar sus métodos
+                Pokemon nuevo = new Pokemon();
+            PokemonNegocio negocio = new PokemonNegocio();
+
+                //1. Mapeo los datos del formulario a las propiedades del nuevo Pokemon
+                nuevo.Numero = int.Parse(txtNumero.Text);
+                nuevo.Nombre = txtNombre.Text;
+                nuevo.Descripcion = txtDescripcion.Text;
+                nuevo.UrlImagen = txtUrlImagen.Text;
+
+                //2.Mapeo de los DropDownList a las propiedades Tipo y Debilidad del nuevo Pokemon (Claves foráneas)
+                // OJO: En la web no tenemos el objeto entero, solo el ID seleccionado (SelectedValue).
+                // Por eso, primero instanciamos el Elemento y luego le asignamos el ID
+                nuevo.Tipo = new Elemento();
+                nuevo.Tipo.Id = int.Parse(ddlTipo.SelectedValue);
+
+                nuevo.Debilidad = new Elemento();
+                nuevo.Debilidad.Id = int.Parse(ddlDebilidad.SelectedValue);
+
+                //3.Mandamos el nuevo Pokemon al método AgregarPokemon del negocio para que se encargue de agregarlo a la BD
+                negocio.AgregarPokemonConSP(nuevo);
+
+                //4. Redireccionamos a la página principal para mostrar el nuevo Pokemon agregado
+                //pongo false al final para evitar un error interno de ASP.NET que dice "Error interno del servidor. El recurso solicitado ha sido asignado a una dirección URL diferente. Haga clic aquí para obtener la dirección URL y luego actualice el navegador para acceder a ella."
+                Response.Redirect("PokemonLista.aspx", false);
+            }
+            catch (Exception ex)
+            {
+                //5.Manejo de excepciones: Si ocurre un error al agregar el Pokemon, mostramos un mensaje de error al usuario
+                Session.Add("error", ex.ToString()); //Agregamos el error a la sesión para poder mostrarlo en la página de error
+
+                throw;
+
+            }
+
+        }
+
+
     }
 }

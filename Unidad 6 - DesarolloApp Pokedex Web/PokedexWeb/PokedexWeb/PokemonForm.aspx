@@ -34,7 +34,7 @@
                 </div>
                 
                 <div class="mt-4">
-                    <asp:Button ID="btnAceptar" runat="server" Text="Aceptar" CssClass="btn btn-primary" />
+                    <asp:Button ID="btnAceptar" runat="server" Text="Aceptar" CssClass="btn btn-primary" OnClick="btnAceptar_Click" />
                     <a href="PokemonLista.aspx" class="btn btn-secondary">Cancelar</a>
                 </div>
             </div>
