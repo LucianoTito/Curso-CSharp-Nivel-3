@@ -11,59 +11,74 @@ namespace PokedexWeb
 {
     public partial class PokemonForm : System.Web.UI.Page
     {
+        public bool ConfirmaEliminacion { get; set; } //Propiedad para controlar la confirmación de eliminación del Pokemon
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            ConfirmaEliminacion = false; //Inicializamos la propiedad de confirmación de eliminación en false cada vez que se carga la página
+
+            try
             {
-                //Instanciamos la clase PokemonNegocio para poder usar sus métodos
-                ElementoNegocio negocio = new ElementoNegocio();
-
-                //Guardamos la lista temporalmente para no ir a la BD dos veces
-                List<Elemento> listaElementos = negocio.listar();
-
-                //1. Configuro el DropDownList para mostrar los tipos de Pokemon
-                ddlTipo.DataSource = listaElementos;
-                ddlTipo.DataValueField = "Id";
-                ddlTipo.DataTextField = "Descripcion";
-                ddlTipo.DataBind();
-
-                //2. Configuro el DropDownList para mostrar los tipos de Debilidad
-                ddlDebilidad.DataSource = listaElementos;
-                ddlDebilidad.DataValueField = "Id";
-                ddlDebilidad.DataTextField = "Descripcion";
-                ddlDebilidad.DataBind();
-
-                //3. Verifico si se recibió un ID por QueryString para cargar los datos del Pokemon a modificar
-
-                string id = Request.QueryString["id"]; //Recibo el ID por QueryString
-
-                if (id != null)
+                if (!IsPostBack)
                 {
-                    //Si hay ID, nuscamos el pokemon en la BD para cargar sus datos en el formulario
-                    PokemonNegocio negocioPokemon = new PokemonNegocio();
-                    List<Pokemon> listaPokemon = negocioPokemon.ObtenerPokemonesConSP(); //Obtenemos la lista de pokemones para buscar el que coincide con el ID recibido
+                    //Instanciamos la clase PokemonNegocio para poder usar sus métodos
+                    ElementoNegocio negocio = new ElementoNegocio();
 
-                    //Buscamos el pokemon con el ID recibido
-                    Pokemon pokemonSeleccionado = listaPokemon.Find(x => x.Id == int.Parse(id));
+                    //Guardamos la lista temporalmente para no ir a la BD dos veces
+                    List<Elemento> listaElementos = negocio.listar();
 
-                    if (pokemonSeleccionado != null)
+                    //1. Configuro el DropDownList para mostrar los tipos de Pokemon
+                    ddlTipo.DataSource = listaElementos;
+                    ddlTipo.DataValueField = "Id";
+                    ddlTipo.DataTextField = "Descripcion";
+                    ddlTipo.DataBind();
+
+                    //2. Configuro el DropDownList para mostrar los tipos de Debilidad
+                    ddlDebilidad.DataSource = listaElementos;
+                    ddlDebilidad.DataValueField = "Id";
+                    ddlDebilidad.DataTextField = "Descripcion";
+                    ddlDebilidad.DataBind();
+
+                    //3. Verifico si se recibió un ID por QueryString para cargar los datos del Pokemon a modificar
+
+                    string id = Request.QueryString["id"]; //Recibo el ID por QueryString
+
+                    if (id != null)
                     {
-                        //Si encontramos el pokemon, cargamos sus datos en el formulario
-                        txtNumero.Text = pokemonSeleccionado.Numero.ToString();
-                        txtNombre.Text = pokemonSeleccionado.Nombre;
-                        txtDescripcion.Text = pokemonSeleccionado.Descripcion;
-                        txtUrlImagen.Text = pokemonSeleccionado.UrlImagen;
+                        //Si hay ID, nuscamos el pokemon en la BD para cargar sus datos en el formulario
+                        PokemonNegocio negocioPokemon = new PokemonNegocio();
+                        List<Pokemon> listaPokemon = negocioPokemon.ObtenerPokemonesConSP(); //Obtenemos la lista de pokemones para buscar el que coincide con el ID recibido
 
-                        //Cargamos los DropDownList con el Tipo y la Debilidad del Pokemon seleccionado
-                        ddlTipo.SelectedValue = pokemonSeleccionado.Tipo.Id.ToString();
-                        ddlDebilidad.SelectedValue = pokemonSeleccionado.Debilidad.Id.ToString();
+                        //Buscamos el pokemon con el ID recibido
+                        Pokemon pokemonSeleccionado = listaPokemon.Find(x => x.Id == int.Parse(id));
 
-                        //Forzamos el evento de la carga de la imagen para mostrar la imagen del pokemon seleccionado
-                        txtUrlImagen_TextChanged(sender, e);
+                        if (pokemonSeleccionado != null)
+                        {
+                            //Si encontramos el pokemon, cargamos sus datos en el formulario
+                            txtNumero.Text = pokemonSeleccionado.Numero.ToString();
+                            txtNombre.Text = pokemonSeleccionado.Nombre;
+                            txtDescripcion.Text = pokemonSeleccionado.Descripcion;
+                            txtUrlImagen.Text = pokemonSeleccionado.UrlImagen;
+
+                            //Cargamos los DropDownList con el Tipo y la Debilidad del Pokemon seleccionado
+                            ddlTipo.SelectedValue = pokemonSeleccionado.Tipo.Id.ToString();
+                            ddlDebilidad.SelectedValue = pokemonSeleccionado.Debilidad.Id.ToString();
+
+                            //Forzamos el evento de la carga de la imagen para mostrar la imagen del pokemon seleccionado
+                            txtUrlImagen_TextChanged(sender, e);
+                        }
                     }
-                }
 
+                }
             }
+            catch (Exception ex)
+            {
+
+                Session.Add("error", ex.ToString()); //Agregamos el error a la sesión para poder mostrarlo en la página de error
+                throw;
+            }
+
+         
         }
 
         protected void txtUrlImagen_TextChanged(object sender, EventArgs e)
@@ -73,11 +88,11 @@ namespace PokedexWeb
 
         protected void btnAceptar_Click(object sender, EventArgs e)
         {
-            try 
+            try
             {
                 //Instanciamos un nuevo Pokemon y un PokemonNegocio para poder usar sus métodos
                 Pokemon nuevo = new Pokemon();
-            PokemonNegocio negocio = new PokemonNegocio();
+                PokemonNegocio negocio = new PokemonNegocio();
 
                 //1. Mapeo los datos del formulario a las propiedades del nuevo Pokemon
                 nuevo.Numero = int.Parse(txtNumero.Text);
@@ -114,7 +129,7 @@ namespace PokedexWeb
                     negocio.AgregarPokemonConSP(nuevo);
                 }
 
-              
+
 
                 //4. Redireccionamos a la página principal para mostrar el nuevo Pokemon agregado
                 //pongo false al final para evitar un error interno de ASP.NET que dice "Error interno del servidor. El recurso solicitado ha sido asignado a una dirección URL diferente. Haga clic aquí para obtener la dirección URL y luego actualice el navegador para acceder a ella."
@@ -132,5 +147,47 @@ namespace PokedexWeb
         }
 
 
+
+        
+        protected void btnEliminar_Click(object sender, EventArgs e)
+        {
+            ConfirmaEliminacion = true;
+        }
+        protected void btnConfirmaEliminar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Evaluamos si el checkbox de confirmación de eliminación está marcado
+                if (chkConfirmaEliminacion.Checked)
+                {
+                    //Instanciamos un PokemonNegocio para poder usar sus métodos
+                    PokemonNegocio negocio = new PokemonNegocio();
+
+                    //Obtenemos el ID del Pokemon a eliminar desde la QueryString
+                    int id = int.Parse(Request.QueryString["id"]);
+
+                    //Llamamos al método EliminarPokemon del negocio para eliminar el Pokemon de la BD
+                    negocio.EliminarPokemon(id);
+
+
+                    //Redireccionamos a la página principal para mostrar la lista actualizada de Pokemones
+                    Response.Redirect("PokemonLista.aspx", false);
+
+                }
+                else
+                {
+                    ConfirmaEliminacion = true;
+                }
+          
+            }
+            catch (Exception ex)
+            {
+                //Manejo de excepciones: Si ocurre un error al eliminar el Pokemon, mostramos un mensaje de error al usuario
+                Session.Add("error", ex.ToString()); //Agregamos el error a la sesión para poder mostrarlo en la página de error
+                throw;
+            }
+
+
+        }
     }
 }

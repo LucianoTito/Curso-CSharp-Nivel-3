@@ -52,6 +52,29 @@
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </div>
+            
+
+<%--Panel de Eliminación Segura  --%>
+<div class="row mt-3">
+    <div class="col-md-6">
+        <asp:UpdatePanel ID="UpdatePanelEliminar" runat="server">
+            <ContentTemplate>
+                <div class="mb-3">
+                    <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="btn btn-danger" OnClick="btnEliminar_Click" />
+                </div>
+
+                <%-- Solo se dibuja si la propiedad ConfirmaEliminacion es TRUE  --%>
+                <% if (ConfirmaEliminacion) { %>
+                    <div class="mb-3">
+                        <asp:CheckBox ID="chkConfirmaEliminacion" Text="Confirmar Eliminación" runat="server" CssClass="me-2" />
+                        <asp:Button ID="btnConfirmaEliminar" runat="server" Text="Eliminar Definitivamente" CssClass="btn btn-outline-danger" OnClick="btnConfirmaEliminar_Click" />
+                    </div>
+                <% } %>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </div>
+</div>
+
         </div>
     </div>
 
