@@ -40,47 +40,45 @@ namespace PokedexWeb
                     ddlDebilidad.DataBind();
 
                     //3. Verifico si se recibió un ID por QueryString para cargar los datos del Pokemon a modificar
-
                     string id = Request.QueryString["id"]; //Recibo el ID por QueryString
 
                     if (id != null)
                     {
-                        //Si hay ID, nuscamos el pokemon en la BD para cargar sus datos en el formulario
-                        PokemonNegocio negocioPokemon = new PokemonNegocio();
-                        List<Pokemon> listaPokemon = negocioPokemon.ObtenerPokemonesConSP(); //Obtenemos la lista de pokemones para buscar el que coincide con el ID recibido
+                        // MODO MODIFICACIÓN: Si hay ID, mostramos el botón de eliminar
+                        UpdatePanelEliminar.Visible = true;
 
-                        //Buscamos el pokemon con el ID recibido
+                        PokemonNegocio negocioPokemon = new PokemonNegocio();
+                        List<Pokemon> listaPokemon = negocioPokemon.ObtenerPokemonesConSP();
+
                         Pokemon pokemonSeleccionado = listaPokemon.Find(x => x.Id == int.Parse(id));
 
+                        //si el pokemon seleccionado no es nulo, cargo los datos en los controles del formulario
                         if (pokemonSeleccionado != null)
                         {
-                            //Si encontramos el pokemon, cargamos sus datos en el formulario
                             txtNumero.Text = pokemonSeleccionado.Numero.ToString();
                             txtNombre.Text = pokemonSeleccionado.Nombre;
                             txtDescripcion.Text = pokemonSeleccionado.Descripcion;
                             txtUrlImagen.Text = pokemonSeleccionado.UrlImagen;
 
-                            //Cargamos los DropDownList con el Tipo y la Debilidad del Pokemon seleccionado
                             ddlTipo.SelectedValue = pokemonSeleccionado.Tipo.Id.ToString();
                             ddlDebilidad.SelectedValue = pokemonSeleccionado.Debilidad.Id.ToString();
 
-                            //Forzamos el evento de la carga de la imagen para mostrar la imagen del pokemon seleccionado
                             txtUrlImagen_TextChanged(sender, e);
                         }
                     }
-
+                    else
+                    { 
+                        // MODO ALTA: Si el ID es nulo, ocultamos el botón de eliminar
+                        UpdatePanelEliminar.Visible = false;
+                    }
                 }
             }
             catch (Exception ex)
             {
-
-                Session.Add("error", ex.ToString()); //Agregamos el error a la sesión para poder mostrarlo en la página de error
+                Session.Add("error", ex.ToString());
                 throw;
             }
-
-         
         }
-
         protected void txtUrlImagen_TextChanged(object sender, EventArgs e)
         {
             imgPokemon.ImageUrl = txtUrlImagen.Text; //Asignamos el valor del TextBox txtUrl a la propiedad ImageUrl del control Image imgPokemon para que se actualice la imagen mostrada
