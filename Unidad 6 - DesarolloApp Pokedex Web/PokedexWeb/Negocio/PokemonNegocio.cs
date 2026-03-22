@@ -130,6 +130,8 @@ namespace Negocio
                     if (!(datos.Lector["Debilidad"] is DBNull)) aux.Debilidad.Descripcion = (string)datos.Lector["Debilidad"];
                     if (!(datos.Lector["IdDebilidad"] is DBNull)) aux.Debilidad.Id = (int)datos.Lector["IdDebilidad"];
 
+                    if (!(datos.Lector["Activo"] is DBNull)) aux.Activo = (bool)datos.Lector["Activo"]; 
+
                     listaPokemons.Add(aux);
                 }
 

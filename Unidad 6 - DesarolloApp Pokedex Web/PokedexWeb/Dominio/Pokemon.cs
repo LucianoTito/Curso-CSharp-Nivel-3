@@ -25,8 +25,12 @@ namespace Dominio
 
         public string UrlImagen { get; set; } = string.Empty;
 
+        public bool Activo { get; set; } //Necesito que el objeto entienda si está activo o no en la memoria de C#
+
         public Elemento Tipo { get; set; } = new Elemento();
 
         public Elemento Debilidad { get; set; } = new Elemento();
+
+       
     }
 }

@@ -1,9 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MiMaster.Master" AutoEventWireup="true" CodeBehind="PokemonForm.aspx.cs" Inherits="PokedexWeb.PokemonForm" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-</asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server"></asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     
-
     <div class="container mt-4">
         <h2>Formulario de Pokémon</h2>
         <hr />
@@ -21,7 +19,6 @@
                 </div>
                 <div class="mb-3">
                     <label for="ddlTipo" class="form-label">Tipo</label>
-                    <%-- Desplegable que cargaremos desde la BD --%>
                     <asp:DropDownList ID="ddlTipo" CssClass="form-select" runat="server"></asp:DropDownList>
                 </div>
                 <div class="mb-3">
@@ -33,9 +30,12 @@
                     <asp:TextBox ID="txtDescripcion" TextMode="MultiLine" CssClass="form-control" runat="server"></asp:TextBox>
                 </div>
                 
+                <%-- BOTONERA PRINCIPAL --%>
                 <div class="mt-4">
                     <asp:Button ID="btnAceptar" runat="server" Text="Aceptar" CssClass="btn btn-primary" OnClick="btnAceptar_Click" />
-                    <a href="PokemonLista.aspx" class="btn btn-secondary">Cancelar</a>
+                    <a href="PokemonLista.aspx" class="btn btn-secondary me-2">Cancelar</a>
+                    <%-- Botón de Eliminación Lógica (Inactivar)  --%>
+                    <asp:Button ID="btnInactivar" runat="server" Text="Inactivar" CssClass="btn btn-warning" OnClick="btnInactivar_Click" />
                 </div>
             </div>
 
@@ -45,7 +45,6 @@
                     <ContentTemplate>
                         <div class="mb-3">
                             <label for="txtUrlImagen" class="form-label">URL Imagen</label>
-                            <%-- AutoPostBack="true" para que dispare el evento al salir de la caja de texto --%>
                             <asp:TextBox ID="txtUrlImagen" CssClass="form-control" AutoPostBack="true" OnTextChanged="txtUrlImagen_TextChanged" runat="server"></asp:TextBox>
                         </div>
                         <asp:Image ID="imgPokemon" ImageUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" Width="60%" runat="server" />
@@ -53,29 +52,27 @@
                 </asp:UpdatePanel>
             </div>
             
-
-<%--Panel de Eliminación Segura  --%>
-<div class="row mt-3">
-    <div class="col-md-6">
-        <asp:UpdatePanel ID="UpdatePanelEliminar" runat="server">
-            <ContentTemplate>
-                <div class="mb-3">
-                    <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="btn btn-danger" OnClick="btnEliminar_Click" />
-                </div>
-
-                <%-- Solo se dibuja si la propiedad ConfirmaEliminacion es TRUE  --%>
-                <% if (ConfirmaEliminacion) { %>
-                    <div class="mb-3">
-                        <asp:CheckBox ID="chkConfirmaEliminacion" Text="Confirmar Eliminación" runat="server" CssClass="me-2" />
-                        <asp:Button ID="btnConfirmaEliminar" runat="server" Text="Eliminar Definitivamente" CssClass="btn btn-outline-danger" OnClick="btnConfirmaEliminar_Click" />
-                    </div>
-                <% } %>
-            </ContentTemplate>
-        </asp:UpdatePanel>
-    </div>
-</div>
-
         </div>
-    </div>
 
+        <%-- Panel de Eliminación Física Segura --%>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <asp:UpdatePanel ID="UpdatePanelEliminar" runat="server">
+                    <ContentTemplate>
+                        <div class="mb-3">
+                            <asp:Button ID="btnEliminar" runat="server" Text="Eliminar Físico" CssClass="btn btn-danger" OnClick="btnEliminar_Click" />
+                        </div>
+
+                        <% if (ConfirmaEliminacion) { %>
+                            <div class="mb-3">
+                                <asp:CheckBox ID="chkConfirmaEliminacion" Text="Confirmar Eliminación" runat="server" CssClass="me-2" />
+                                <asp:Button ID="btnConfirmaEliminar" runat="server" Text="Eliminar Definitivamente" CssClass="btn btn-outline-danger" OnClick="btnConfirmaEliminar_Click" />
+                            </div>
+                        <% } %>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+            </div>
+        </div>
+        
+    </div>
 </asp:Content>

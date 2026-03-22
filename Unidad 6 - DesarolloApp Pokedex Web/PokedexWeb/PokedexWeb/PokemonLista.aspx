@@ -16,6 +16,12 @@
                 <asp:BoundField HeaderText="Número" DataField="Numero" />
                 <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
                 <asp:BoundField HeaderText="Tipo" DataField="Tipo.Descripcion" />
+                <asp:TemplateField HeaderText="Estado">
+    <ItemTemplate>
+        <%-- Evaluo el booleano 'Activo' con un operador ternario. Si es true mostramos ✅, si es false ❌ --%>
+        <%# Convert.ToBoolean(Eval("Activo")) ? "✅ Activo" : "❌ Inactivo" %>
+    </ItemTemplate>
+</asp:TemplateField>
                 <asp:CommandField ShowSelectButton="true" SelectText="✍️" HeaderText="Acción" />
             </Columns>
         </asp:GridView>

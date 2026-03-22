@@ -46,6 +46,7 @@ namespace PokedexWeb
                     {
                         // MODO MODIFICACIÓN: Si hay ID, mostramos el botón de eliminar
                         UpdatePanelEliminar.Visible = true;
+                        btnInactivar.Visible = true;
 
                         PokemonNegocio negocioPokemon = new PokemonNegocio();
                         List<Pokemon> listaPokemon = negocioPokemon.ObtenerPokemonesConSP();
@@ -68,8 +69,9 @@ namespace PokedexWeb
                     }
                     else
                     { 
-                        // MODO ALTA: Si el ID es nulo, ocultamos el botón de eliminar
+                        //Si el ID es nulo, oculto el botón de eliminar
                         UpdatePanelEliminar.Visible = false;
+                        btnInactivar.Visible = false;
                     }
                 }
             }
@@ -186,6 +188,28 @@ namespace PokedexWeb
             }
 
 
+        }
+
+        protected void btnInactivar_Click(object sender, EventArgs e) 
+        {
+            try
+            {
+                PokemonNegocio negocio = new PokemonNegocio();
+
+                //Capturo el ID de la URL al igual que hicimos en Modificar y en eliminar
+                int id = int.Parse(Request.QueryString["id"]);
+
+                //Llamo al método que ya tenía creado
+                negocio.EliminarLogico(id);
+
+                Response.Redirect("PokemonLista.aspx", false);
+
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex.ToString());
+                throw;
+            }
         }
     }
 }
