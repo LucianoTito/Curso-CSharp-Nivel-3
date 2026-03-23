@@ -65,9 +65,22 @@ namespace PokedexWeb
                             ddlDebilidad.SelectedValue = pokemonSeleccionado.Debilidad.Id.ToString();
 
                             txtUrlImagen_TextChanged(sender, e);
+
+                            //Guardar en sesión
+                            Session.Add("pokemonSeleccionado", pokemonSeleccionado);
+
+                            //Configuro el  botón
+                            if (!pokemonSeleccionado.Activo)
+                            {
+                                btnInactivar.Text = "Reactivar";
+                            }
+                            else
+                            {
+                                btnInactivar.Text = "Inactivar";
+                            }
                         }
                     }
-                    else
+                    else 
                     { 
                         //Si el ID es nulo, oculto el botón de eliminar
                         UpdatePanelEliminar.Visible = false;
@@ -196,12 +209,13 @@ namespace PokedexWeb
             {
                 PokemonNegocio negocio = new PokemonNegocio();
 
-                //Capturo el ID de la URL al igual que hicimos en Modificar y en eliminar
-                int id = int.Parse(Request.QueryString["id"]);
+                //1. Saco al Pokemón de la memoria (session)
+                Pokemon seleccionado = (Pokemon)Session["pokemonSeleccionado"];
 
-                //Llamo al método que ya tenía creado
-                negocio.EliminarLogico(id);
+                //2.Llamo al método pasándole el ID y el estado INVERSO
+                negocio.EliminarLogico(seleccionado.Id, !seleccionado.Activo);
 
+                //3.Volvemos a la pantalla principal
                 Response.Redirect("PokemonLista.aspx", false);
 
             }

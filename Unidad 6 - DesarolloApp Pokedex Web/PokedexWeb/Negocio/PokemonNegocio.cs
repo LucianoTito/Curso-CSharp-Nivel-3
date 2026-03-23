@@ -308,14 +308,16 @@ namespace Negocio
             }
         }
 
-        public void EliminarLogico(int Id)
+        public void EliminarLogico(int Id, bool activo = false)
         {
             Acceso_a_datos datos = new Acceso_a_datos();
             try
             {
                 // UPDATE para marcar como inactivo en lugar de borrar
-                datos.SetearConsulta("UPDATE POKEMONS SET Activo = 0 WHERE Id = @Id");
+                datos.SetearConsulta("UPDATE POKEMONS SET Activo = @activo WHERE Id = @Id");
                 datos.SetearParametro("@Id", Id);
+                datos.SetearParametro("@activo", activo);
+
                 datos.EjecutarAccion();
             }
             catch (Exception)
