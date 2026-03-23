@@ -330,93 +330,106 @@ namespace Negocio
             }
         }
 
-        public List<Pokemon> Filtrar(string campo, string criterio, string filtro)
+        // MÉTODO FILTRAR
+        public List<Pokemon> Filtrar(string campo, string criterio, string filtro, string estado)
         {
             List<Pokemon> lista = new List<Pokemon>();
             Acceso_a_datos datos = new Acceso_a_datos();
             try
             {
-                // La base de la consulta (Nota el espacio al final)
-                string consulta = "SELECT P.Numero, P.Nombre, P.Descripcion, P.UrlImagen, E.Descripcion AS Tipo, D.Descripcion AS Debilidad, P.IdTipo, P.IdDebilidad, P.Id FROM dbo.ELEMENTOS E, POKEMONS P, ELEMENTOS D WHERE E.Id = P.IdTipo And D.Id = P.IdDebilidad And P.Activo = 1";
+                // 1. LA CONSULTA BASE
+                // Le agrego "WHERE 1=1" al final. Es un truco de programador: 1 siempre es igual a 1, 
+                // así que no afecta en nada, pero me permite concatenar todos los "AND" que yo quiera después sin que rompa la sintaxis.
+                string consulta = "SELECT P.Id, P.Numero, P.Nombre, P.Descripcion, P.UrlImagen, E.Descripcion as Tipo, D.Descripcion as Debilidad, P.IdTipo, P.IdDebilidad, P.Activo FROM POKEMONS P LEFT JOIN ELEMENTOS E ON P.IdTipo = E.Id LEFT JOIN ELEMENTOS D ON P.IdDebilidad = D.Id WHERE 1=1 ";
 
-                switch (campo)
+                // 2. EVALUAMOS EL CAMPO Y CRITERIO
+                if (campo == "Número")
                 {
-                    case "Número":
-                        switch (criterio)
-                        {
-                            case "Mayor a...":
-                                consulta += " AND P.Numero > " + filtro;
-                                break;
-                            case "Menor a...":
-                                consulta += " AND P.Numero < " + filtro;
-                                break;
-                            case "Igual a...":
-                                consulta += " AND P.Numero = " + filtro;
-                                break;
-                        }
-                        break;
-
-                    case "Nombre":
-                        switch (criterio)
-                        {
-                            case "Comienza con...":
-                                consulta += " AND P.Nombre LIKE '" + filtro + "%'";
-                                break;
-                            case "Termina con...":
-                                consulta += " AND P.Nombre LIKE '%" + filtro + "'";
-                                break;
-                            case "Contiene...":
-                                consulta += " AND P.Nombre LIKE '%" + filtro + "%'";
-                                break;
-                        }
-                        break; 
-
-                    case "Tipo":
-                        switch (criterio)
-                        {
-                            case "Igual a...":
-                                // Usamos E.Descripcion porque 'E' es el alias de la tabla Elementos para el Tipo
-                                consulta += " AND E.Descripcion = '" + filtro + "'";
-                                break;
-                        }
-                        break;
-
-                    case "Debilidad":
-                        switch (criterio)
-                        {
-                            case "Igual a...":
-                                // Usamos D.Descripcion porque 'D' es el alias para la Debilidad
-                                consulta += " AND D.Descripcion = '" + filtro + "'";
-                                break;
-                        }
-                        break;
+                    switch (criterio)
+                    {
+                        case "Mayor a":
+                            consulta += "AND P.Numero > " + filtro;
+                            break;
+                        case "Menor a":
+                            consulta += "AND P.Numero < " + filtro;
+                            break;
+                        default:
+                            consulta += "AND P.Numero = " + filtro;
+                            break;
+                    }
                 }
+                else if (campo == "Nombre")
+                {
+                    switch (criterio)
+                    {
+                        case "Comienza con":
+                            consulta += "AND P.Nombre LIKE '" + filtro + "%' ";
+                            break;
+                        case "Termina con":
+                            consulta += "AND P.Nombre LIKE '%" + filtro + "' ";
+                            break;
+                        default:
+                            consulta += "AND P.Nombre LIKE '%" + filtro + "%' ";
+                            break;
+                    }
+                }
+               else // Si es "Tipo" 
+                {
+                    switch (criterio)
+                    {
+                        case "Comienza con":
+                            consulta += "AND E.Descripcion LIKE '" + filtro + "%' "; // Usamos E porque es la tabla Elementos
+                            break;
+                        case "Termina con":
+                            consulta += "AND E.Descripcion LIKE '%" + filtro + "' ";
+                            break;
+                        default:
+                            consulta += "AND E.Descripcion LIKE '%" + filtro + "%' ";
+                            break;
+                    }
+                }
+
+                // 3. EVALUAMOS EL ESTADO 
+                if (estado == "Activo")
+                {
+                    consulta += " AND P.Activo = 1"; // Le pegamos el filtro de activo
+                }
+                else if (estado == "Inactivo")
+                {
+                    consulta += " AND P.Activo = 0"; // Le pegamos el filtro de inactivo 
+                }
+                // Si el estado es "Todos", el código simplemente no entra a los 'if' y no le agrega ninguna restricción.
+
+                // 4. EJECUTAMOS LA CONSULTA DINÁMICA
                 datos.SetearConsulta(consulta);
                 datos.EjecutarLectura();
 
-                // Usamos la propiedad pública Lector de tu clase Acceso_a_datos
+                // 5. MAPEO (Transformamos las filas de SQL en objetos C#)
                 while (datos.Lector.Read())
                 {
                     Pokemon aux = new Pokemon();
+                    aux.Id = (int)datos.Lector["Id"];
+                    aux.Numero = (int)datos.Lector["Numero"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Descripcion = (string)datos.Lector["Descripcion"];
 
-                    // Mapeo de datos (Fíjate que todos ahora dicen datos.Lector)
-                    if (!datos.Lector.IsDBNull(0)) aux.Numero = datos.Lector.GetInt32(0);
-                    if (!datos.Lector.IsDBNull(1)) aux.Nombre = datos.Lector.GetString(1);
-                    if (!datos.Lector.IsDBNull(2)) aux.Descripcion = datos.Lector.GetString(2);
-                    if (!datos.Lector.IsDBNull(3)) aux.UrlImagen = datos.Lector.GetString(3);
-                    if (!datos.Lector.IsDBNull(4)) aux.Tipo.Descripcion = (string)datos.Lector.GetString(4);
-                    if (!datos.Lector.IsDBNull(5)) aux.Debilidad.Descripcion = (string)datos.Lector.GetString(5);
+                    if (!(datos.Lector["UrlImagen"] is DBNull))
+                        aux.UrlImagen = (string)datos.Lector["UrlImagen"];
 
-                    // Ids agregados
-                    if (!datos.Lector.IsDBNull(6)) aux.Tipo.Id = datos.Lector.GetInt32(6);
-                    if (!datos.Lector.IsDBNull(7)) aux.Debilidad.Id = datos.Lector.GetInt32(7);
-                    if (!datos.Lector.IsDBNull(8)) aux.Id = datos.Lector.GetInt32(8);
+                    aux.Tipo = new Elemento();
+                    aux.Tipo.Id = (int)datos.Lector["IdTipo"];
+                    aux.Tipo.Descripcion = (string)datos.Lector["Tipo"];
 
-                    lista.Add(aux); // ¡Cuidado aquí! En este método tu lista se llama 'lista', no 'listaPokemons'
+                    aux.Debilidad = new Elemento();
+                    aux.Debilidad.Id = (int)datos.Lector["IdDebilidad"];
+                    aux.Debilidad.Descripcion = (string)datos.Lector["Debilidad"];
+
+                    // Leemos el estado 
+                    if (!(datos.Lector["Activo"] is DBNull))
+                        aux.Activo = (bool)datos.Lector["Activo"];
+
+                    lista.Add(aux);
                 }
-
-         
-
 
                 return lista;
             }

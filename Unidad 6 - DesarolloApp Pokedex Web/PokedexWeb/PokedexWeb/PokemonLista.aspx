@@ -10,14 +10,78 @@
         <asp:UpdatePanel ID="UpdatePanelFiltro" runat="server">
             <ContentTemplate>
                 
-                <%-- Fila del Filtro Rápido  --%>
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label for="txtFiltro" class="form-label">Filtrar por Nombre:</label>
-                        <%-- AutoPostBack es clave para que reaccione al terminar de escribir  --%>
-                        <asp:TextBox ID="txtFiltro" runat="server" CssClass="form-control" AutoPostBack="true" OnTextChanged="txtFiltro_TextChanged" placeholder="Ej: Pikachu..."></asp:TextBox>
-                    </div>
-                </div>
+                <%-- Fila del Filtro Rápido y el CheckBox --%>
+<div class="row mb-3">
+    <div class="col-6">
+        <div class="mb-3">
+            <asp:Label Text="Filtrar Rápido:" runat="server" CssClass="form-label" />
+            <asp:TextBox runat="server" ID="txtFiltro" CssClass="form-control" AutoPostBack="true" OnTextChanged="txtFiltro_TextChanged" placeholder="Ej: Pikachu..." />
+        </div>
+    </div>
+    
+    <div class="col-6" style="display: flex; flex-direction: column; justify-content: flex-end;">
+        <div class="mb-3">
+            <%-- El checkbox mágico con AutoPostBack --%>
+            <asp:CheckBox Text="Filtro Avanzado" runat="server" ID="chkAvanzado" AutoPostBack="true" OnCheckedChanged="chkAvanzado_CheckedChanged" CssClass="form-check-input ms-2" />
+        </div>
+    </div>
+</div>
+
+<%-- 
+    Bloque del Filtro Avanzado:
+    Solo se renderiza si la variable booleana 'FiltroAvanzado' es verdadera
+--%>
+<% if (FiltroAvanzado) { %>
+    <div class="row mb-3">
+        <div class="col-3">
+            <div class="mb-3">
+                <asp:Label Text="Campo" runat="server" CssClass="form-label" />
+                <%-- Desplegable principal con AutoPostBack para hacer el efecto cascada --%>
+                <asp:DropDownList runat="server" ID="ddlCampo" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlCampo_SelectedIndexChanged">
+                    <asp:ListItem Text="Número" />
+                    <asp:ListItem Text="Nombre" />
+                    <asp:ListItem Text="Tipo" />
+                </asp:DropDownList>
+            </div>
+        </div>
+        
+        <div class="col-3">
+            <div class="mb-3">
+                <asp:Label Text="Criterio" runat="server" CssClass="form-label" />
+                <asp:DropDownList runat="server" ID="ddlCriterio" CssClass="form-select"></asp:DropDownList>
+            </div>
+        </div>
+        
+        <div class="col-3">
+            <div class="mb-3">
+                <asp:Label Text="Filtro" runat="server" CssClass="form-label" />
+                <asp:TextBox runat="server" ID="txtFiltroAvanzado" CssClass="form-control" />
+            </div>
+        </div>
+        
+        <div class="col-3">
+            <div class="mb-3">
+                <asp:Label Text="Estado" runat="server" CssClass="form-label" />
+                <asp:DropDownList runat="server" ID="ddlEstado" CssClass="form-select">
+                    <asp:ListItem Text="Todos" />
+                    <asp:ListItem Text="Activo" />
+                    <asp:ListItem Text="Inactivo" />
+                </asp:DropDownList>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-3">
+    <div class="col-6">
+        <div class="mb-3">
+            <asp:Button Text="Buscar" runat="server" CssClass="btn btn-primary" ID="btnBuscar" OnClick="btnBuscar_Click" />
+            
+            <%--Botón para limpiar los filtros con estilo secundario --%>
+            <asp:Button Text="Limpiar Filtro" runat="server" CssClass="btn btn-outline-secondary ms-2" ID="btnLimpiar" OnClick="btnLimpiar_Click" />
+        </div>
+    </div>
+</div>
+<% } %>
 
                 <%-- La Grilla --%>
                 <asp:GridView ID="dgvPokemons" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="false" DataKeyNames="Id" OnSelectedIndexChanged="dgvPokemons_SelectedIndexChanged">
