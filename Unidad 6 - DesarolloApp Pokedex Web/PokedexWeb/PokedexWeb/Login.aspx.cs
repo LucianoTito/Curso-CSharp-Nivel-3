@@ -18,28 +18,28 @@ namespace PokedexWeb
 
         protected void btnIngresar_Click (object sender, EventArgs e)
         {
-            Usuario usuario = new Usuario();
-            UsuarioNegocio negocio = new UsuarioNegocio();
+            Trainee trainee = new Trainee();
+            TraineeNegocio negocio = new TraineeNegocio();
 
             try
             {
                 //1.Capturo los datos de la pantalla
-                usuario.User = txtUsuario.Text;
-                usuario.Pass = txtPassword.Text;
+                trainee.Email = txtEmail.Text;
+                trainee.Pass = txtPassword.Text;
 
                 // 2. Evaluamos si el método Loguear devuelve true o false
-                if (negocio.Loguear(usuario))
+                if (negocio.Login(trainee))
                 {
                     // Si es true, GUARDAMOS el objeto completo en la Sesión.
-                    Session.Add("usuario", usuario);
+                    Session.Add("trainee", trainee);
 
                     // Lo mandamos a la pantalla principal de administración
-                    Response.Redirect("PokemonLista.aspx", false);
+                    Response.Redirect("Default.aspx", false);
                 }
                 else
                 {
                     // Si es false, mandamos un mensaje de error a la Sesión y redirigimos a una página de Error.
-                    Session.Add("error", "Usuario o contraseña incorrectos");
+                    Session.Add("error", "Email o contraseña incorrectos");
                     Response.Redirect("Error.aspx", false);
                 }
 

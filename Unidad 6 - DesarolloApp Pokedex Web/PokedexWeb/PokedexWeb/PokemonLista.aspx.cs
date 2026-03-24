@@ -15,26 +15,13 @@ namespace PokedexWeb
         {
             FiltroAvanzado = chkAvanzado.Checked;
 
-            // -- CANDADO 1: ¿Hay alguien logueado?
-            if (Session["usuario"]==null)
+            //Si el usuario logueado NO ES admin, lo rebotamos
+            if (!Seguridad.esAdmin(Session["trainee"]))
             {
-                //Si la sesión está vacía, lo mandamos a la pantalla de error o al login
-                Session.Add("error", "Debes loguearte para ingresar a la Pokedex.");
+                Session.Add("error", "Se requieren permisos de admin para acceder a esta pantalla");
                 Response.Redirect("Error.aspx", false);
-                return;
             }
 
-            // -- CANDADO 2: Control de Perfiles --
-
-            //Recuperamos el obj de usuario de la sesión
-            Usuario user = (Usuario)Session["usuario"];
-
-            //Si NO es admin, le ocultamos el btn agregar
-            if (user.TipoUser != TipoUsuario.Admin)
-            {
-                btnAgregar.Visible = false;
-                dgvPokemons.Columns[5].Visible = false;
-            }
 
             //Solo queremos cargar la lista de pokemones la primera vez que se carga la página, no cada vez que se hace un postback (ej: al hacer click en un botón)
 
