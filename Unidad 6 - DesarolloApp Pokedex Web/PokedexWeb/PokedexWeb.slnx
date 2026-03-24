@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Elementos de la solución/">
+    <File Path="claves.config" />
+  </Folder>
   <Project Path="Dominio/Dominio.csproj" Id="9a02d69c-1f10-4e99-8bd9-c5608ab3966f" />
   <Project Path="Negocio/Negocio.csproj" Id="4a29706c-fc26-4a6d-bdc7-8c24d896daf8" />
   <Project Path="PokedexWeb/PokedexWeb.csproj" Id="96dcee33-f075-4203-b420-2cbc67197fb2" />
