@@ -98,6 +98,27 @@ namespace Negocio
             }
         }
 
+        //Método exclusivo para atrapar un valor único (como un ID generado por OUTPUT)
+        public int EjecutarAccionEscalar()
+        {
+            try
+            {
+                comando.Connection = conexion;
+                conexion.Open();
+
+                // ExecuteScalar devuelve un objeto genérico con la primera celda del resultado.
+               // Lo convertimos a String y luego lo parseamos a Entero
+                return int.Parse(comando.ExecuteScalar().ToString());
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
         // Método para agregar parámetros a la consulta: funciona como un diccionario clave-valor para evitar concatenar strings y prevenir inyecciones SQL
         //Recibe un string con el nombre del parámetro (ej: "@Id") y un objeto con el valor a asignar (ej: 5)
         public void SetearParametro(string nombre, object valor)

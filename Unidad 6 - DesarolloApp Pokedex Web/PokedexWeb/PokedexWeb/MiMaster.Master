@@ -12,23 +12,48 @@
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="Default.aspx">Pokédex Web</a>
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="Default.aspx">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="PokemonLista.aspx">Lista Pokémon</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="EnvioEmail.aspx">Enviar Correo</a>
-                            </li>
-                    </ul>
-                </div>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="Default.aspx">Pokédex Web</a>
+        
+        <%-- Botón hamburguesa para celulares --%>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-toggle="target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            
+            <%-- Enlaces del lado izquierdo (me-auto empuja lo que sigue a la derecha) --%>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="Default.aspx">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="PokemonLista.aspx">Lista Pokémon</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="EnvioEmail.aspx">Enviar Correo</a>
+                </li>
+                <%-- Estos dos por ahora pueden no llevar a ningún lado hasta que los armemos --%>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Favoritos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Mi Perfil</a>
+                </li>
+            </ul>
+
+            <%-- Botones del lado derecho --%>
+            <div class="d-flex align-items-center">
+                <a href="Login.aspx" class="btn btn-success me-2">Login</a>
+                <a href="Registro.aspx" class="btn btn-outline-primary me-3">Registrarse</a>
+                
+                <%-- Imagen de perfil de prueba (círculo gris) --%>
+                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="Perfil" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover;" />
             </div>
-        </nav>
+
+        </div>
+    </div>
+</nav>
 
         <div class="container mt-4">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
