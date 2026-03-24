@@ -25,5 +25,13 @@ namespace PokedexWeb
             }
 
         }
+
+        protected void btnSalir_Click (object sender, EventArgs e)
+        {
+            //Limpio la sesión de forma segura
+            Session.Clear();
+
+            Response.Redirect("Login.aspx");
+        }
     }
 }

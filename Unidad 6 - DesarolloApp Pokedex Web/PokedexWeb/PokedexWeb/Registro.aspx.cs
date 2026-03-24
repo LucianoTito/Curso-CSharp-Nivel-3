@@ -26,14 +26,16 @@ namespace PokedexWeb
                 user.Email = txtEmail.Text;
                 user.Pass = txtPassword.Text;
 
-                // 2. Insertamos en la base de datos y CAPTURAMOS el ID generado
+                // 2. Insertamos en la BD y al mismo tiempo le asignamos el ID devuelto a nuestro objeto 'user'
                 TraineeNegocio traineeNegocio = new TraineeNegocio();
-                int id = traineeNegocio.InsertarNuevo(user);
+                user.Id = traineeNegocio.InsertarNuevo(user);
 
-                // IMPORTANTE: Por ahora solo atrapamos el ID, más adelante en el curso lo usaremos 
-                // para mantener la sesión del usuario iniciada automáticamente
+                //3. AUTOLOGIN: Como ya tenemos el Email, el pass y el id, 
+                //metemos este obj directo en la session
+                Session.Add("trainee", user);
 
-                // 3. Enviamos el mail de bienvenida usando el motor de correos que creé antes
+
+                // 4. Enviamos el mail de bienvenida usando el motor de correos que creé antes
                 EmailService emailService = new EmailService();
                 emailService.ArmarCorreo(user.Email, "Bienvenida Trainee", "Hola, te damos la bienvenida a la aplicación Pokedex. ¡Tu viaje comienza ahora!");
                 emailService.EnviarEmail();

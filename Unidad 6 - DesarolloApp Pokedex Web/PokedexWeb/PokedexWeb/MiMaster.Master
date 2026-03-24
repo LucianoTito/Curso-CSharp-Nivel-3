@@ -44,12 +44,22 @@
 
             <%-- Botones del lado derecho --%>
             <div class="d-flex align-items-center">
-                <a href="Login.aspx" class="btn btn-success me-2">Login</a>
-                <a href="Registro.aspx" class="btn btn-outline-primary me-3">Registrarse</a>
-                
-                <%-- Imagen de perfil de prueba (círculo gris) --%>
-                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="Perfil" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover;" />
-            </div>
+    <%-- Evaluamos directo en el HTML si hay una sesión activa usando la clase estática --%>
+    <% if (!Negocio.Seguridad.sesionActiva(Session["trainee"])) { %>
+        
+        <%-- Si NO hay sesión, mostramos los botones públicos --%>
+        <a href="Login.aspx" class="btn btn-success me-2">Login</a>
+        <a href="Registro.aspx" class="btn btn-outline-primary me-3">Registrarse</a>
+    
+    <% } else { %>
+        
+        <%-- Si SÍ hay sesión, mostramos el botón Salir y la foto de perfil --%>
+        <asp:Button Text="Salir" ID="btnSalir" CssClass="btn btn-outline-danger me-3" OnClick="btnSalir_Click" runat="server" />
+        <asp:Label ID="lblUser" runat="server" CssClass="text-light me-3"></asp:Label>
+        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="Perfil" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover;" />
+    
+    <% } %>
+</div>
 
         </div>
     </div>
