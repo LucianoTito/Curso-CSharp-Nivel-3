@@ -168,7 +168,9 @@
   <ItemGroup>
     <Content Include="Default.aspx" />
     <Content Include="DetallePokemon.aspx" />
+    <Content Include="Error.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Login.aspx" />
     <Content Include="PokemonForm.aspx" />
     <Content Include="PokemonLista.aspx" />
     <Content Include="Web.config" />
@@ -188,8 +190,22 @@
     <Compile Include="DetallePokemon.aspx.designer.cs">
       <DependentUpon>DetallePokemon.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="MiMaster.Master.cs">
       <DependentUpon>MiMaster.Master</DependentUpon>

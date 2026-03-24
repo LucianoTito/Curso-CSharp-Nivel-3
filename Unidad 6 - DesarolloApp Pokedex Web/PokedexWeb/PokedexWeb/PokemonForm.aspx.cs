@@ -15,6 +15,25 @@ namespace PokedexWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            //Validamos que esté logueado
+            if (Session["usuario"] == null)
+            {
+                Session.Add("error", "Debes loguearte para ingresar.");
+                Response.Redirect("Error.aspx", false);
+                return; //corta la ejecución
+            }
+            else
+            {
+                //Si está logueado, verificamos que tenga permisos de admin
+                Usuario user = (Usuario)Session["usuario"];
+                if (user.TipoUser != TipoUsuario.Admin)
+                {
+                    Session.Add("error", "No teienes permisos de admin para ingresar a esta pantalla");
+                    Response.Redirect("Error.aspx", false);
+                    return;
+                }
+            }
+
             ConfirmaEliminacion = false; //Inicializamos la propiedad de confirmación de eliminación en false cada vez que se carga la página
 
             try

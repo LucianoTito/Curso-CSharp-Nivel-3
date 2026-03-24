@@ -106,7 +106,7 @@
         </asp:UpdatePanel>
 
         <div class="mt-3">
-            <a href="PokemonForm.aspx" class="btn btn-success">Agregar Pokémon</a>
+            <a href="PokemonForm.aspx" class="btn btn-success" id="btnAgregar" runat="server">Agregar Pokémon</a>
         </div>
     </div>
 </asp:Content>
