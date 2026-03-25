@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Dominio;
 
 namespace Negocio
@@ -46,7 +47,7 @@ namespace Negocio
             try
             {
                 //1.Armo la consulta para buscar coindicencias exactas
-                datos.SetearConsulta("SELECT Id, Email, Pass, Admin, ImagenPerfil FROM USERS WHERE Email = @email AND Pass = @pass");
+                datos.SetearConsulta("SELECT Id, Email, Pass, Admin, ImagenPerfil, Nombre, Apellido, FechaNacimiento FROM USERS WHERE Email = @email AND Pass = @pass");
 
 
                 //2. Le paso los parámetros que vienen cargados desde la pantalla
@@ -63,6 +64,18 @@ namespace Negocio
                     if (!(datos.Lector["ImagenPerfil"] is DBNull))
                     {
                         trainee.ImagenPerfil = (string)datos.Lector["ImagenPerfil"];
+                    }
+                    if (!(datos.Lector["Nombre"] is DBNull))
+                    {
+                        trainee.Nombre = (string)datos.Lector["Nombre"];
+                    }
+                    if (!(datos.Lector["Apellido"] is DBNull))
+                    {
+                        trainee.Apellido = (string)datos.Lector["Apellido"];
+                    }
+                    if (!(datos.Lector["FechaNacimiento"] is DBNull))
+                    {
+                        trainee.FechaNacimiento = DateTime.Parse(datos.Lector["FechaNacimiento"].ToString());
                     }
                     //Si entra aquí es porque el usuario existe
                     //Aprovecho para completar el obj con los datos que faltan
@@ -86,18 +99,22 @@ namespace Negocio
 
         }
 
-        public void ActualizarImgPerfil (Trainee user)
+        public void ActualizarPerfil (Trainee user)
         {
             Acceso_a_datos datos = new Acceso_a_datos ();
             try
             {
                 //1.Armo el UPDATE para guardar el nombre de la img
-                datos.SetearConsulta("UPDATE USERS SET ImagenPerfil = @imagen WHERE Id = @id");
+                datos.SetearConsulta("UPDATE USERS SET ImagenPerfil = @imagen, Nombre = @nombre, Apellido = @apellido, FechaNacimiento = @fecha WHERE Id = @id");
 
                 //2.Le paso los parámetros
+                datos.SetearParametro("@id", user.Id);
                 //Si la img de perfil es null, mandamos DB.Null.Value para que SQL no explote
                 datos.SetearParametro("@imagen", (object)user.ImagenPerfil ?? DBNull.Value);
-                datos.SetearParametro("@id", user.Id);
+                datos.SetearParametro("@nombre", (object)user.Nombre ?? DBNull.Value);
+                datos.SetearParametro("@apellido", (object)user.Apellido ?? DBNull.Value);
+                datos.SetearParametro("@fecha", user.FechaNacimiento);
+                
 
                 //3.Ejecuto la acción (NO ES lectura, es ESCRITURA)
                 datos.EjecutarAccion();

@@ -25,12 +25,21 @@ namespace PokedexWeb
 
                         //Precargamos datos
                         txtEmail.Text = user.Email;
+                        txtNombre.Text = user.Nombre;
+                        txtApellido.Text = user.Apellido;
 
                         //Precargo foto si es que tiene
                         if (!string.IsNullOrEmpty(user.ImagenPerfil))
                         {
                             imgNuevoPerfil.ImageUrl = "~/Images/" + user.ImagenPerfil;
                         }
+
+                        //Para que se pueda leer la fecha, tiene que estar en "yyyy-MM-dd"
+                        if(user.FechaNacimiento != null && user.FechaNacimiento.ToString() != "1/1/0001 00:00:00")
+                        {
+                            txtFechaNacimiento.Text = user.FechaNacimiento.ToString("yyyy-MM-dd");
+                        }
+
                     }
 
                 }
@@ -49,6 +58,12 @@ namespace PokedexWeb
             {
                 //1. Recupero al usuario logueado desde session
                 Trainee user = (Trainee)Session["trainee"];
+                user.Nombre = txtNombre.Text;
+                user.Apellido = txtApellido.Text;   
+                if (!string.IsNullOrEmpty(txtFechaNacimiento.Text))
+                {
+                    user.FechaNacimiento = DateTime.Parse(txtFechaNacimiento.Text);
+                }
 
                 //2. Verifico si el usuario realmente seleccionó un archivo en el control
                 if (txtImagen.PostedFile.FileName != "")
@@ -73,7 +88,7 @@ namespace PokedexWeb
 
                     //Guardo los datos en la BD
                     TraineeNegocio negocio = new TraineeNegocio();
-                    negocio.ActualizarImgPerfil(user);
+                    negocio.ActualizarPerfil(user);
                     
            
                 }
