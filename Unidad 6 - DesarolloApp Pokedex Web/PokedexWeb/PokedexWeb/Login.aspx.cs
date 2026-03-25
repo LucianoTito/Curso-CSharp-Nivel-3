@@ -24,6 +24,19 @@ namespace PokedexWeb
 
             try
             {
+                //Validación de Front-End en el SERVIDOR:
+
+                //Llamo al método estático (el método devuelve false si está vacío)
+                if(Validacion.ValidaTextoVacio(txtEmail) == false ||Validacion.ValidaTextoVacio(txtPassword) == false )
+                {
+                    //Si alguno está vacio, muestro la pantalla de error
+                    Session.Add("error", "Tenés que completar ambos campos para ingresar!");
+                    Response.Redirect("Error.aspx", false); 
+                    
+                    return; //Uso return para cortar la ejecución y que NO siga a la BD
+                }
+
+
                 //1.Capturo los datos de la pantalla
                 trainee.Email = txtEmail.Text;
                 trainee.Pass = txtPassword.Text;
