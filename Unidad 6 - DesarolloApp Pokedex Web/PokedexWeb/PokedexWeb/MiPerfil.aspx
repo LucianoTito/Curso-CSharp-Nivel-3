@@ -67,7 +67,7 @@
             document.getElementById('<%= imgNuevoPerfil.ClientID %>').src = e.target.result;
         };
 
-        // 5. ¡A la carga! Le damos la orden al reader para que empiece a leer el archivo físico.
+        // 5.Le damos la orden al reader para que empiece a leer el archivo físico.
         // Lo lee como "DataURL", que es básicamente transformar los píxeles de la foto en texto puro para que el navegador lo entienda.
         reader.readAsDataURL(input.files[0]);
     }

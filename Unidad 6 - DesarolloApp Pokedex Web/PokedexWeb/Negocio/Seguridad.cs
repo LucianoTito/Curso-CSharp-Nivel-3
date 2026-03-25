@@ -45,6 +45,10 @@ namespace Negocio
             {  return false; }
         }
 
+        public static string ManejarError (Exception ex)
+        {
+            return ex.ToString();
+        }
         
 
     }

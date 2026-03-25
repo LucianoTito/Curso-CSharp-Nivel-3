@@ -11,10 +11,27 @@ namespace PokedexWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["error"] != null)
+            if (!IsPostBack)
             {
-                lblMensaje.Text = Session["error"].ToString();
+                //Verifico si hay un error guardadio en session
+                if (Session["error"] != null)
+                {
+                    lblMensaje.Text = Session["error"].ToString();
+                }
+                else
+                {
+                    //Mje por defecto por si alguien entra a Error.aspx copiando la URL
+                    lblMensaje.Text = "Ocurrió un error inesperado. Por favor intente de nuevo.";
+                }    
             }
+        }
+
+        protected void btnVolver_Click (object sender, EventArgs e)
+        {
+            //Limpio el error de la sesión para que no quede flotando en la memoria
+            Session.Remove("error");
+
+            Response.Redirect("Login.aspx", false);
         }
     }
 }

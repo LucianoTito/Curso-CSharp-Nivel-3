@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using Dominio;
 using Negocio;
 
+
 namespace PokedexWeb
 {
     public partial class Login : System.Web.UI.Page
@@ -49,7 +50,7 @@ namespace PokedexWeb
             catch (Exception ex)
             {
 
-                Session.Add("error", ex.ToString());
+                Session.Add("error", Seguridad.ManejarError(ex));
                 Response.Redirect("Error.aspx", false);
             }
         }
