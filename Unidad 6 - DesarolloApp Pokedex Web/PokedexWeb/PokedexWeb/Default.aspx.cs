@@ -13,10 +13,12 @@ namespace PokedexWeb
 {
     public partial class Default : System.Web.UI.Page
     {
+
         //Creo la propieda pública "Lista" de tipo List<Articulo> para almacenar la lista de artículos que se mostrará en la interfaz
         public List<Pokemon> ListaPokemon { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
+            
             //Solo cargo si es la primera vez que se carga la página, no cada vez que se hace un postback (ej: al hacer click en un botón)
 
             if (!IsPostBack)
