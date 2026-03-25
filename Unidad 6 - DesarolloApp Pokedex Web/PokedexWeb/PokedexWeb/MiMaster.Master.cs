@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Dominio;
 using Negocio;
 
 namespace PokedexWeb
@@ -21,6 +22,24 @@ namespace PokedexWeb
                 {
                     //Si el método devuelve false (no hay sesión), lo pateamos al Login
                     Response.Redirect("Login.aspx", false);
+                }
+            }
+
+            if (Seguridad.sesionActiva(Session["trainee"]))
+            {
+                //Casteo el obj de la sesión
+                Trainee user = (Trainee)Session["trainee"];
+
+                //Valido si tiene una img guardada en la bd
+                if(!string.IsNullOrEmpty(user.ImagenPerfil))
+                {
+                    //Le asigno su foto real
+                    imgAvatar.ImageUrl = "~/Images/" + user.ImagenPerfil;
+                }
+                else
+                {
+                    //avatar gris por defecto
+                    imgAvatar.ImageUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
                 }
             }
 

@@ -46,7 +46,7 @@ namespace Negocio
             try
             {
                 //1.Armo la consulta para buscar coindicencias exactas
-                datos.SetearConsulta("SELECT Id, Email, Pass, Admin FROM USERS WHERE Email =@email AND Pass = @pass");
+                datos.SetearConsulta("SELECT Id, Email, Pass, Admin, ImagenPerfil FROM USERS WHERE Email = @email AND Pass = @pass");
 
 
                 //2. Le paso los parámetros que vienen cargados desde la pantalla
@@ -59,6 +59,11 @@ namespace Negocio
                 //4.Preguntamos si encontró algun registro
                 if (datos.Lector.Read()) // Si lee, da verdadero
                 {
+                    //Valido que el dato NO sea nulo en la BD antes de leerlo
+                    if (!(datos.Lector["ImagenPerfil"] is DBNull))
+                    {
+                        trainee.ImagenPerfil = (string)datos.Lector["ImagenPerfil"];
+                    }
                     //Si entra aquí es porque el usuario existe
                     //Aprovecho para completar el obj con los datos que faltan
                     trainee.Id = (int)datos.Lector["Id"];
@@ -79,6 +84,34 @@ namespace Negocio
                 datos.CerrarConexion();
             }
 
+        }
+
+        public void ActualizarImgPerfil (Trainee user)
+        {
+            Acceso_a_datos datos = new Acceso_a_datos ();
+            try
+            {
+                //1.Armo el UPDATE para guardar el nombre de la img
+                datos.SetearConsulta("UPDATE USERS SET ImagenPerfil = @imagen WHERE Id = @id");
+
+                //2.Le paso los parámetros
+                //Si la img de perfil es null, mandamos DB.Null.Value para que SQL no explote
+                datos.SetearParametro("@imagen", (object)user.ImagenPerfil ?? DBNull.Value);
+                datos.SetearParametro("@id", user.Id);
+
+                //3.Ejecuto la acción (NO ES lectura, es ESCRITURA)
+                datos.EjecutarAccion();
+                
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
         }
 
     }
