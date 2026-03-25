@@ -85,13 +85,13 @@ namespace PokedexWeb
                     user.ImagenPerfil = nombreArchivo;
 
                     imgNuevoPerfil.ImageUrl = "~/Images/" + user.ImagenPerfil;
-
-                    //Guardo los datos en la BD
-                    TraineeNegocio negocio = new TraineeNegocio();
-                    negocio.ActualizarPerfil(user);
-                    
+              
            
                 }
+
+                //Guardo los datos en la BD
+                TraineeNegocio negocio = new TraineeNegocio();
+                negocio.ActualizarPerfil(user);
 
             }
             catch (Exception ex)
