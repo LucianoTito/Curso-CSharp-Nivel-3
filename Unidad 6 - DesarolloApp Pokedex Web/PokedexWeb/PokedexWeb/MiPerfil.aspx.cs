@@ -56,6 +56,17 @@ namespace PokedexWeb
         {
             try
             {
+                //VALIDACIÓN CON ASP:
+
+                //Fuerzo la validación de todos los controles ASP de la página
+                Page.Validate();
+
+                //Pregunto si la página NO es valida
+                if(!Page.IsValid)
+                {
+                    return; // Si la página no es válida corto la ejecución inmediatamente
+                }
+
                 //1. Recupero al usuario logueado desde session
                 Trainee user = (Trainee)Session["trainee"];
                 user.Nombre = txtNombre.Text;

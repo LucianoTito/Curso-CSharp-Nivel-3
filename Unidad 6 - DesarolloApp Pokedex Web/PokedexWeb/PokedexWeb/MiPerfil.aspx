@@ -12,8 +12,17 @@
                 <asp:TextBox runat="server" ID="txtEmail" CssClass="form-control" ReadOnly="true" />
             </div>
             <div class="mb-3">
-                <label class="form-label">Nombre</label>
+                <label class="form-label">Nombre <span class="text-danger">*</span></label>
                 <asp:TextBox runat="server" ID="txtNombre" CssClass="form-control" />
+
+                        <%--VALIDADOR ASP --%>
+                        <asp:RequiredFieldValidator 
+                                ID="rfvNombre" 
+                                runat="server" 
+                                ControlToValidate="txtNombre" 
+                                ErrorMessage="* El nombre es requerido" 
+                                CssClass="text-danger">
+                          </asp:RequiredFieldValidator>
             </div>
             <div class="mb-3">
                 <label class="form-label">Apellido</label>
