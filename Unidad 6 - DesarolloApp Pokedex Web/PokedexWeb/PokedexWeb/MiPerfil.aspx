@@ -48,19 +48,29 @@
     </div>
 </div>
     <script>
-    function previsualizar(input) {
-        if (input.files && input.files[0]) {
-            // Usamos FileReader de HTML5 para leer el archivo localmente
-            var reader = new FileReader();
+        // 1. Declaramos la función que recibe como parámetro el propio 'input' de HTML
+        function previsualizar(input) {
 
-            reader.onload = function (e) {
-                // Buscamos nuestra imagen de ASP.NET usando su ID dinámico y le cambiamos la ruta (src)
-                document.getElementById('<%= imgNuevoPerfil.ClientID %>').src = e.target.result;
-            };
+            // 2. Verificamos que el input tenga archivos ('files') y que al menos haya seleccionado uno ('files[0]')
+            if (input.files && input.files[0]) {
 
-            // Ejecutamos la lectura de la foto elegida
-            reader.readAsDataURL(input.files[0]);
-        }
+                // 3. Instanciamos FileReader. Es una API nativa de HTML5 diseñada 
+                // exclusivamente para leer el contenido de archivos guardados en la compu del usuario SIN subirlos al servidor.
+                var reader = new FileReader();
+
+                // 4. Definimos un "evento": ¿Qué va a pasar cuando el reader TERMINE de leer el archivo?
+                reader.onload = function (e) {
+
+        // a) document.getElementById busca la etiqueta <img> en la pantalla.
+            // b) <%= imgNuevoPerfil.ClientID %> es C# inyectando el ID real que ASP.NET le puso a la imagen.
+            // c) .src = e.target.result; cambia la ruta de la imagen por el resultado de la lectura (un código larguísimo en base64 que representa la foto).
+            document.getElementById('<%= imgNuevoPerfil.ClientID %>').src = e.target.result;
+        };
+
+        // 5. ¡A la carga! Le damos la orden al reader para que empiece a leer el archivo físico.
+        // Lo lee como "DataURL", que es básicamente transformar los píxeles de la foto en texto puro para que el navegador lo entienda.
+        reader.readAsDataURL(input.files[0]);
     }
+}
     </script>
 </asp:Content>
