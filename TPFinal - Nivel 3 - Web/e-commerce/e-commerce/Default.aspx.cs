@@ -15,9 +15,18 @@ namespace e_commerce
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //siempre que la pág cargue me traigo todo de la bd
-            ArticuloNegocio negocio = new ArticuloNegocio(); 
-            ListaArticulos = negocio.Listar();
+            if (!IsPostBack)
+            {
+                //siempre que la pág cargue me traigo todo de la bd
+                ArticuloNegocio negocio = new ArticuloNegocio();
+                ListaArticulos = negocio.Listar();
+
+                Session.Add("listaArticulos", ListaArticulos);
+            }
+            else
+            {
+                ListaArticulos = (List<Articulo>)Session["listaArticulos"];
+            }          
 
         }
 
