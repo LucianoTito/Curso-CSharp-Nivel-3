@@ -1,30 +1,38 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="e_commerce.Default" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-</asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server"></asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
     <h1 class="mb-4">¡Bienvenido a mi Tienda Virtual!</h1>
 
-    <%-- Grilla de Bootstrap: 1 columna en celulares, 3 columnas en pantallas medianas --%>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <%--  BARRA DE BÚSQUEDA --%>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="input-group shadow-sm">
+                <asp:TextBox runat="server" ID="txtFiltro" CssClass="form-control" placeholder="Buscar producto..." />
+                <asp:Button Text="Buscar" runat="server" ID="btnBuscar" CssClass="btn btn-success" OnClick="btnBuscar_Click" />
+                <asp:Button Text="Limpiar" runat="server" ID="btnLimpiar" CssClass="btn btn-outline-secondary" OnClick="btnLimpiar_Click" />
+            </div>
+        </div>
+    </div>
+
+    <%--  GRILLA DE TARJETAS --%>
+    <div class="row row-cols-1 row-cols-md-4 g-4 mb-5">
         
-        <%-- Bucle foreach nativo de C# incrustado en HTML --%>
         <% foreach (Dominio.Articulo art in ListaArticulos)
            { %>
             
             <div class="col">
-                <div class="card h-100">
-                    <%-- Imagen del artículo. Si la URL está rota, el 'onerror' carga una imagen por defecto --%>
-                    <img src="<%: art.ImagenUrl %>" class="card-img-top" alt="<%: art.Nombre %>" 
-                         onerror="this.src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'">
+                <div class="card h-100 shadow-sm">
+                    <img src="<%: art.ImagenUrl %>" class="card-img-top p-2" alt="<%: art.Nombre %>" 
+                         onerror="this.src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'"
+                         style="max-height: 200px; object-fit: contain;">
                     
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title"><%: art.Nombre %></h5>
-                        <p class="card-text"><%: art.Descripcion %></p>
+                        <p class="card-text flex-grow-1 text-muted"><%: art.Descripcion %></p>
                         <p class="card-text fs-5 text-success fw-bold">$ <%: art.Precio %></p>
                         
-                        <%-- Botón que nos llevará a la futura pantalla de detalle --%>
-                        <a href="Detalle.aspx?id=<%: art.Id %>" class="btn btn-primary">Ver Detalles</a>
+                        <a href="Detalle.aspx?id=<%: art.Id %>" class="btn btn-primary mt-auto">Ver Detalles</a>
                     </div>
                 </div>
             </div>
