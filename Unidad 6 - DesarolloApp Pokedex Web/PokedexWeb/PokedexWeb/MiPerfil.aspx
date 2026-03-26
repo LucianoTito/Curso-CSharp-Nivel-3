@@ -13,7 +13,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Nombre <span class="text-danger">*</span></label>
-                <asp:TextBox runat="server" ID="txtNombre" CssClass="form-control" />
+                <asp:TextBox runat="server" ID="txtNombre" CssClass="form-control" ClientIDMode="Static" />
 
                         <%--VALIDADOR ASP --%>
                         <asp:RequiredFieldValidator 
@@ -36,12 +36,12 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Apellido</label>
-                <asp:TextBox runat="server" ID="txtApellido" CssClass="form-control" />
+                <asp:TextBox runat="server" ID="txtApellido" CssClass="form-control" ClientIDMode="Static"/>
                 <%-- VALIDADOR REGEX (Solo Letras y Espacios) --%>
                   <asp:RegularExpressionValidator 
                         ID="RegularExpressionValidator1" 
                         runat="server" 
-                        ControlToValidate="txtNombre" 
+                        ControlToValidate="txtApellido" 
                         ErrorMessage="Formato incorrecto. Solo se permiten letras." 
                         ValidationExpression="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" 
                         CssClass="text-danger" 
@@ -71,7 +71,7 @@
     <div class="row">
         <div class="col-md-8">
             <%-- Botón Guardar con su evento OnClick --%>
-            <asp:Button Text="Guardar" CssClass="btn btn-primary" ID="btnGuardar" OnClick="btnGuardar_Click" runat="server" />
+            <asp:Button Text="Guardar" CssClass="btn btn-primary" ID="btnGuardar" OnClick="btnGuardar_Click" OnClientClick="return validar()" runat="server" />
             <a href="Default.aspx" class="btn btn-link">Regresar</a>
         </div>
     </div>
@@ -100,6 +100,52 @@
         // Lo lee como "DataURL", que es básicamente transformar los píxeles de la foto en texto puro para que el navegador lo entienda.
         reader.readAsDataURL(input.files[0]);
     }
-}
+        }
+
+        function validar()
+        {
+            //1.Capturo los controles del DOM usando los IDs estáticos
+            const txtNombre = document.getElementById("txtNombre");
+            const txtApellido = document.getElementById("txtApellido");
+            //Bandera que avisa si el formulario está listo para viajar al servidor
+            let formularioValido = true;
+
+            const regexLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+
+            //2.Valido el Nombre
+            //.trim() le saca los espacios en blanco al principio y al final
+            if (txtNombre.value.trim() === "" || !regexLetras.test(txtNombre.value.trim())) {
+                //Si está vacio lo pinto de rojo  y le saco el verde
+                txtNombre.classList.add("is-invalid");
+                txtNombre.classList.remove("is-valid");
+                formularioValido = false;
+            }
+            else
+            {
+                //Si está bien le pongo verde y le saco el rojo
+                txtNombre.classList.remove("is-invalid");
+                txtNombre.classList.add("is-valid");
+
+            }
+
+            //3.Valido el apellido
+            const valorApellido = txtApellido.value.trim();
+
+            if (valorApellido !== "" && !regexLetras.test(valorApellido))
+            {
+                txtApellido.classList.add("is-invalid");
+                txtApellido.classList.remove("is-valid");
+                formularioValido = false;
+            }
+            else
+            {
+                txtApellido.classList.remove("is-invalid");
+                txtApellido.classList.add("is-valid");
+            }
+
+            //4.Si retorna false, la ejecución se detiene y no va al servidor
+            return formularioValido;
+
+        }
     </script>
 </asp:Content>
