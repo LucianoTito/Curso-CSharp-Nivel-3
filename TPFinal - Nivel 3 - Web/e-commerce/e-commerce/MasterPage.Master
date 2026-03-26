@@ -13,8 +13,8 @@
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
-<body>
-    <form id="form1" runat="server">
+<body class="d-flex flex-column min-vh-100">
+    <form id="form1" runat="server" class="d-flex flex-column flex-grow-1">
         
         <%-- NAVBAR DE BOOTSTRAP --%>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -39,13 +39,13 @@
         </nav>
 
         <%-- CONTENEDOR PRINCIPAL DONDE CARGARÁN LAS OTRAS PÁGINAS --%>
-        <div class="container mt-4">
+        <div class="container mt-4 flex-grow-1">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
         </div>
 
         <%--  FOOTER  --%>
-        <footer class="bg-dark text-white text-center py-3 mt-5">
+        <footer class="bg-dark text-white text-center py-3 mt-auto">
             <div class="container">
                 <p class="mb-0">&copy; <%: DateTime.Now.Year %> - Mi Tienda Virtual. Todos los derechos reservados.</p>
             </div>
