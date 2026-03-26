@@ -1,0 +1,58 @@
+# ==========================================
+# APUNTES Y ARCHIVOS PERSONALES 
+# ==========================================
+# Ignoramos tu documento específico (en Word y por las dudas en PDF)
+Documentación_desarrollo_tpFinal.docx
+Documentación_desarrollo_tpFinal.pdf
+
+# (Opcional) Si querés que Git ignore TODOS los Word de esta carpeta, descomentá la línea de abajo:
+# *.docx
+
+# ==========================================
+# CARPETAS DE VISUAL STUDIO Y COMPILACIÓN
+# ==========================================
+.vs/
+.vscode/
+bin/
+obj/
+Debug/
+Release/
+
+# ==========================================
+# ARCHIVOS DE CONFIGURACIÓN Y CACHÉ
+# ==========================================
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.vsidx
+*.dbmdl
+*.bak
+*.log
+*.local
+*.cache
+*.pdb
+
+# ==========================================
+# PAQUETES NUGET Y PUBLICACIÓN
+# ==========================================
+packages/
+*.nupkg
+*.snupkg
+.publish/
+*.pubxml
+*.pubxml.user
+
+# ==========================================
+# ARCHIVOS DE IIS Y OTROS
+# ==========================================
+_IISExpress/
+*.vspscc
+*.vssscc
+TestResults/
+*.coverage
+*.coveragexml
+*.swp
+*.tmp
+*.temp
+claves.config
