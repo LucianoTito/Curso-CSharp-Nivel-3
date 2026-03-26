@@ -23,10 +23,30 @@
                                 ErrorMessage="* El nombre es requerido" 
                                 CssClass="text-danger">
                           </asp:RequiredFieldValidator>
+                      <%-- VALIDADOR REGEX (Solo Letras y Espacios) --%>
+                         <asp:RegularExpressionValidator 
+                            ID="revNombre" 
+                            runat="server" 
+                            ControlToValidate="txtNombre" 
+                            ErrorMessage="Formato incorrecto. Solo se permiten letras." 
+                            ValidationExpression="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" 
+                            CssClass="text-danger" 
+                            Display="Dynamic">
+                       </asp:RegularExpressionValidator>
             </div>
             <div class="mb-3">
                 <label class="form-label">Apellido</label>
                 <asp:TextBox runat="server" ID="txtApellido" CssClass="form-control" />
+                <%-- VALIDADOR REGEX (Solo Letras y Espacios) --%>
+                  <asp:RegularExpressionValidator 
+                        ID="RegularExpressionValidator1" 
+                        runat="server" 
+                        ControlToValidate="txtNombre" 
+                        ErrorMessage="Formato incorrecto. Solo se permiten letras." 
+                        ValidationExpression="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" 
+                        CssClass="text-danger" 
+                        Display="Dynamic">
+                    </asp:RegularExpressionValidator>
             </div>
             <div class="mb-3">
                 <label class="form-label">Fecha de Nacimiento</label>
