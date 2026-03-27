@@ -53,9 +53,9 @@ namespace e_commerce
             }
             catch (Exception ex)
             {
+                Session.Add("error", "Ocurrió un error inesperado al intentar loguearse: " +  ex.Message);
+                Response.Redirect("Error.aspx", false ) ;
 
-                lblError.Text = "Ocurrió un error inesperado: " + ex.Message;
-                lblError.Visible = true;
             }
         }
     }

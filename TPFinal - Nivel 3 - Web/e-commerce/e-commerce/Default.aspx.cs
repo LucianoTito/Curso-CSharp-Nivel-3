@@ -15,18 +15,28 @@ namespace e_commerce
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            try
             {
-                //siempre que la pág cargue me traigo todo de la bd
-                ArticuloNegocio negocio = new ArticuloNegocio();
-                ListaArticulos = negocio.Listar();
+                if (!IsPostBack)
+                {
+                    //siempre que la pág cargue me traigo todo de la bd
+                    ArticuloNegocio negocio = new ArticuloNegocio();
+                    ListaArticulos = negocio.Listar();
 
-                Session.Add("listaArticulos", ListaArticulos);
+                    Session.Add("listaArticulos", ListaArticulos);
+                }
+                else
+                {
+                    ListaArticulos = (List<Articulo>)Session["listaArticulos"];
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ListaArticulos = (List<Articulo>)Session["listaArticulos"];
-            }          
+
+                Session.Add("error", "Error al cargar el catálogo de productos: " + ex.Message);
+                Response.Redirect("Error.aspx", false);
+            }
+         
 
         }
 
