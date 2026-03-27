@@ -30,7 +30,7 @@
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title"><%: art.Nombre %></h5>
                         <p class="card-text flex-grow-1 text-muted"><%: art.Descripcion %></p>
-                        <p class="card-text fs-5 text-success fw-bold">$ <%: art.Precio %></p>
+                        <p class="card-text fs-5 text-success fw-bold">$ <%: art.Precio.ToString("N2") %></p>
                         
                         <a href="Detalle.aspx?id=<%: art.Id %>" class="btn btn-primary mt-auto">Ver Detalles</a>
                     </div>

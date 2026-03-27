@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Dominio;
+using Negocio;
 
 
 namespace e_commerce
@@ -13,7 +14,7 @@ namespace e_commerce
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["usuario"] != null)
+            if (Seguridad.sesionActiva(Session["usuario"]))
             {
                 Usuario user = (Usuario)Session["usuario"];
 

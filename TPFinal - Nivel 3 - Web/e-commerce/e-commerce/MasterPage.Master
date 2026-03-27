@@ -1,5 +1,4 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="e_commerce.MasterPage" %>
-
 <!DOCTYPE html>
 <html>
 <head runat="server">
@@ -32,31 +31,27 @@
               
               <%-- BOTONES DINÁMICOS --%>
               <div class="d-flex align-items-center">
-                  <% if (Session["usuario"] == null) { %>
+                  
+                  <%-- Evaluo si hay sesion o no --%>
+                  <% if (!Negocio.Seguridad.sesionActiva(Session["usuario"])) { %>
                       
-                      <%-- Si NO hay sesión, mostramos Iniciar Sesión --%>
                       <a href="Login.aspx" class="btn btn-outline-light me-2">Iniciar Sesión</a>
-                      
                   
                   <% } else { %>
                       
-                      <%-- Si SÍ hay sesión, evaluamos si es Admin para mostrar el botón de gestión --%>
-                      <% if (((Dominio.Usuario)Session["usuario"]).Admin) { %>
+                      <%-- Evaluo si es admin --%>
+                      <% if (Negocio.Seguridad.esAdmin(Session["usuario"])) { %>
                           <a href="ArticulosLista.aspx" class="btn btn-warning me-3 fw-bold">⚙ Administrar Catálogo</a>
                       <% } %>
                       
-                      <%-- Foto, Nombre y botón de Salir para cualquier usuario logueado --%>
+                      <%-- Foto, Nombre y botón de Salir --%>
                       <asp:Label ID="lblUser" runat="server" CssClass="text-light me-3 fw-bold"></asp:Label>
                       <asp:Image ID="imgAvatar" runat="server" CssClass="me-3 rounded-circle border border-2 border-secondary" Style="height: 40px; width: 40px; object-fit: cover;" />
                       <asp:Button Text="Salir" ID="btnSalir" CssClass="btn btn-outline-danger" OnClick="btnSalir_Click" runat="server" />
                   
                   <% } %>
               </div>
-            </div>
-          </div>
-        </nav>
-
-        <%-- CONTENEDOR PRINCIPAL DONDE  SE CARGAN LAS OTRAS PÁGINAS --%>
+            </div> </div> </nav> <%-- CONTENEDOR PRINCIPAL DONDE  SE CARGAN LAS OTRAS PÁGINAS --%>
         <div class="container mt-4 flex-grow-1">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
