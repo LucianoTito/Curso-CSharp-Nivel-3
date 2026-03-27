@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Dominio;
+
 
 namespace e_commerce
 {
@@ -11,7 +13,29 @@ namespace e_commerce
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["usuario"] != null)
+            {
+                Usuario user = (Usuario)Session["usuario"];
 
+                lblUser.Text = "Hola, " + user.Nombre;
+
+                if(!string.IsNullOrEmpty(user.UrlImagenPerfil))
+                {
+                    imgAvatar.ImageUrl = "~/Images/" + user.UrlImagenPerfil;
+                }
+                else
+                {
+                    imgAvatar.ImageUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+                }
+            }
+
+        }
+
+        protected void btnSalir_Click (object sender, EventArgs e)
+        {
+            Session.Clear();
+
+            Response.Redirect("Default.aspx", false);
         }
     }
 }

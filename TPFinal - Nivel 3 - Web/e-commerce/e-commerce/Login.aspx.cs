@@ -13,18 +13,12 @@ namespace e_commerce
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-        }
-
-        protected void btnIngresar_Click (object sender, EventArgs e)
-        {
             if (Session["usuario"] != null)
             {
                 Response.Redirect("Default.aspx", false);
             }
-
-
         }
+
 
         protected void btnIngresar_Click(object sender, EventArgs e)
         {
@@ -44,10 +38,12 @@ namespace e_commerce
                 user.Pass = txtPassword.Text;
 
                 if (negocio.Loguear(user))
-                    {
-                    //Si es true
+                   {
+                    //Si loguear es true
                     Session.Add("usuario", user);
-                      }
+                    Response.Redirect("Default.aspx", false);
+
+                   }
                 else
                 {
                     lblError.Text = "Email o contraseñas incorrectos. Intente nuevamente";
