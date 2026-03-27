@@ -163,6 +163,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ArticuloForm.aspx" />
     <Content Include="ArticulosLista.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Detalle.aspx" />
@@ -172,6 +173,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArticuloForm.aspx.cs">
+      <DependentUpon>ArticuloForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ArticuloForm.aspx.designer.cs">
+      <DependentUpon>ArticuloForm.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ArticulosLista.aspx.cs">
       <DependentUpon>ArticulosLista.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
