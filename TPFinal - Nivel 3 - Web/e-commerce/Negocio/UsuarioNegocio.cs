@@ -54,5 +54,31 @@ namespace Negocio
                 datos.CerrarConexion();
             }
         }
+
+        public void ActualizarPerfil (Usuario user)
+        {
+                AccesoDatos datos = new AccesoDatos();
+    
+                try
+                {
+                    datos.SetearConsulta("UPDATE USERS SET nombre = @nombre, apellido = @apellido, urlImagenPerfil = @imagen WHERE Id = @id");
+    
+                    datos.SetearParametro("@id", user.Id);
+                    datos.SetearParametro("@nombre", user.Nombre !=null ? user.Nombre : (object)DBNull.Value);
+                    datos.SetearParametro("@apellido", user.Apellido !=null ? user.Apellido: (object)DBNull.Value);
+                    datos.SetearParametro("@imagen", user.UrlImagenPerfil !=null ? user.UrlImagenPerfil : (object)DBNull.Value);
+    
+                    datos.EjecutarAccion();
+                }
+                catch (Exception ex)
+                {
+    
+                    throw ex;
+                }
+                finally
+                {
+                    datos.CerrarConexion();
+            }
+        }
     }
 }

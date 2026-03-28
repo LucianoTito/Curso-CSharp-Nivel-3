@@ -44,13 +44,18 @@
                           <a href="ArticulosLista.aspx" class="btn btn-warning me-3 fw-bold">⚙ Administrar Catálogo</a>
                       <% } %>
                       
-                      <%-- Foto, Nombre y botón de Salir --%>
+                      <%-- Zona del Usuario Logueado (Avatar, Nombre, Mi Perfil y Salir) --%>
+                      <asp:Image ID="imgAvatar" runat="server" CssClass="me-2 rounded-circle border border-2 border-secondary" Style="height: 40px; width: 40px; object-fit: cover;" />
                       <asp:Label ID="lblUser" runat="server" CssClass="text-light me-3 fw-bold"></asp:Label>
-                      <asp:Image ID="imgAvatar" runat="server" CssClass="me-3 rounded-circle border border-2 border-secondary" Style="height: 40px; width: 40px; object-fit: cover;" />
-                      <asp:Button Text="Salir" ID="btnSalir" CssClass="btn btn-outline-danger" OnClick="btnSalir_Click" runat="server" />
+                      
+                      <%-- btn miPerfil --%>
+                      <a href="MiPerfil.aspx" class="btn btn-sm btn-outline-info me-3">👤 Mi Perfil</a>
+                      
+                      <asp:Button Text="Salir" ID="btnSalir" CssClass="btn btn-sm btn-outline-danger" OnClick="btnSalir_Click" runat="server" />
                   
                   <% } %>
               </div>
+
             </div> </div> </nav> <%-- CONTENEDOR PRINCIPAL DONDE  SE CARGAN LAS OTRAS PÁGINAS --%>
         <div class="container mt-4 flex-grow-1">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">

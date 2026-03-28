@@ -22,7 +22,7 @@ namespace e_commerce
 
                 if(!string.IsNullOrEmpty(user.UrlImagenPerfil))
                 {
-                    imgAvatar.ImageUrl = "~/Images/" + user.UrlImagenPerfil;
+                    imgAvatar.ImageUrl = "~/Images/Perfiles/" + user.UrlImagenPerfil + "?v=" + DateTime.Now.Ticks.ToString();
                 }
                 else
                 {
