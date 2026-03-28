@@ -103,7 +103,7 @@ namespace e_commerce
                 Articulo nuevo = new Articulo();    
                 ArticuloNegocio negocio = new ArticuloNegocio();
 
-                //paso los datos html a un obj de C#
+                //paso los datos html a un obj 
                 nuevo.Codigo = txtCodigo.Text;
                 nuevo.Nombre = txtNombre.Text;
                 nuevo.Descripcion = txtDescripcion.Text;

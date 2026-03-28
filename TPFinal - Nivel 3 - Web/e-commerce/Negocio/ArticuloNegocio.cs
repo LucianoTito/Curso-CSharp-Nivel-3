@@ -44,11 +44,12 @@ namespace Negocio
         //El método Filtrar permite realizar búsquedas específicas en la base de datos según el campo, criterio y filtro proporcionados. Construye dinámicamente la consulta SQL en función de los parámetros y luego ejecuta la consulta para obtener los resultados filtrados.
         public List<Articulo> Filtrar(string campo, string criterio, string filtro)
         {
-            List <Articulo> lista = new List<Articulo>();
+            List<Articulo> lista = new List<Articulo>();
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
+                
                 string consulta = "SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion AS Marca, A.IdCategoria, C.Descripcion AS Categoria, A.ImagenUrl, A.Precio FROM ARTICULOS A INNER JOIN MARCAS M ON A.IdMarca = M.Id INNER JOIN CATEGORIAS C ON A.IdCategoria = C.Id WHERE ";
 
                 if (campo == "Precio")
@@ -61,7 +62,7 @@ namespace Negocio
                         case "Menor a":
                             consulta += "A.Precio < " + filtro;
                             break;
-                        case "Igual a":
+                        default: // "Igual a"
                             consulta += "A.Precio = " + filtro;
                             break;
                     }
@@ -70,85 +71,75 @@ namespace Negocio
                 {
                     switch (criterio)
                     {
-                        case "Comienza con...":
+                        case "Empieza con":
                             consulta += "A.Nombre LIKE '" + filtro + "%'";
                             break;
-                        case "Termina con...":
+                        case "Termina con":
                             consulta += "A.Nombre LIKE '%" + filtro + "'";
                             break;
-                        case "Contiene...":
+                        default: // "Contiene"
                             consulta += "A.Nombre LIKE '%" + filtro + "%'";
                             break;
-
                     }
                 }
                 else if (campo == "Marca")
                 {
                     switch (criterio)
                     {
-                        case "Comienza con...":
+                        case "Empieza con":
                             consulta += "M.Descripcion LIKE '" + filtro + "%'";
                             break;
-                        case "Termina con...":
+                        case "Termina con":
                             consulta += "M.Descripcion LIKE '%" + filtro + "'";
                             break;
-                        case "Contiene...":
+                        default: // "Contiene"
                             consulta += "M.Descripcion LIKE '%" + filtro + "%'";
                             break;
-
-                        case "Igual a...":
-                            consulta += "M.Descripcion = '" + filtro + "'";
-                            break;
                     }
                 }
-                else if (campo == "Descripción")
+                else if (campo == "Categoría") 
                 {
                     switch (criterio)
                     {
-                        case "Comienza con...":
-                            consulta += "A.Descripcion LIKE '" + filtro + "%'";
+                        case "Empieza con":
+                            consulta += "C.Descripcion LIKE '" + filtro + "%'"; 
                             break;
-                        case "Termina con...":
-                            consulta += "A.Descripcion LIKE '%" + filtro + "'";
+                        case "Termina con":
+                            consulta += "C.Descripcion LIKE '%" + filtro + "'"; 
                             break;
-                        case "Contiene...":
-                            consulta += "A.Descripcion LIKE '%" + filtro + "%'";
+                        default: // "Contiene"
+                            consulta += "C.Descripcion LIKE '%" + filtro + "%'"; 
                             break;
-
                     }
                 }
-
-                else if (campo == "Codigo")
+                else if (campo == "Código") 
                 {
                     switch (criterio)
                     {
-                        case "Comienza con...":
+                        case "Empieza con":
                             consulta += "A.Codigo LIKE '" + filtro + "%'";
                             break;
-                        case "Termina con...":
+                        case "Termina con":
                             consulta += "A.Codigo LIKE '%" + filtro + "'";
                             break;
-                        case "Contiene...":
+                        default: // "Contiene"
                             consulta += "A.Codigo LIKE '%" + filtro + "%'";
                             break;
                     }
                 }
 
-                //Ejecuto y leo la consulta
                 datos.SetearConsulta(consulta);
                 datos.EjecutarLectura();
 
                 while (datos.Lector.Read())
                 {
-                    lista.Add(MapearArticulo(datos));
+                    lista.Add(MapearArticulo(datos)); 
                 }
 
                 return lista;
-
             }
             catch (Exception)
             {
-
                 throw;
             }
             finally
@@ -168,10 +159,10 @@ namespace Negocio
                 datos.EjecutarAccion();
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
             finally
             {
