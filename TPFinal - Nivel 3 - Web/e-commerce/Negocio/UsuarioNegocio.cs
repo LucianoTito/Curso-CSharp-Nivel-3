@@ -9,9 +9,9 @@ namespace Negocio
 {
     public class UsuarioNegocio
     {
-        public bool Loguear (Usuario usuario)
+        public bool Loguear(Usuario usuario)
         {
-            AccesoDatos datos = new AccesoDatos ();
+            AccesoDatos datos = new AccesoDatos();
 
             try
             {
@@ -22,12 +22,12 @@ namespace Negocio
 
                 datos.EjecutarLectura();
 
-                if(datos.Lector.Read())
+                if (datos.Lector.Read())
                 {
                     usuario.Id = (int)datos.Lector["Id"];
                     usuario.Admin = (bool)datos.Lector["admin"];
 
-                    if(!(datos.Lector["nombre"] is DBNull))
+                    if (!(datos.Lector["nombre"] is DBNull))
                     {
                         usuario.Nombre = (string)datos.Lector["nombre"];
                     }
@@ -55,29 +55,51 @@ namespace Negocio
             }
         }
 
-        public void ActualizarPerfil (Usuario user)
+        public void ActualizarPerfil(Usuario user)
         {
-                AccesoDatos datos = new AccesoDatos();
-    
-                try
-                {
-                    datos.SetearConsulta("UPDATE USERS SET nombre = @nombre, apellido = @apellido, urlImagenPerfil = @imagen WHERE Id = @id");
-    
-                    datos.SetearParametro("@id", user.Id);
-                    datos.SetearParametro("@nombre", user.Nombre !=null ? user.Nombre : (object)DBNull.Value);
-                    datos.SetearParametro("@apellido", user.Apellido !=null ? user.Apellido: (object)DBNull.Value);
-                    datos.SetearParametro("@imagen", user.UrlImagenPerfil !=null ? user.UrlImagenPerfil : (object)DBNull.Value);
-    
-                    datos.EjecutarAccion();
-                }
-                catch (Exception ex)
-                {
-    
-                    throw ex;
-                }
-                finally
-                {
-                    datos.CerrarConexion();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.SetearConsulta("UPDATE USERS SET nombre = @nombre, apellido = @apellido, urlImagenPerfil = @imagen WHERE Id = @id");
+
+                datos.SetearParametro("@id", user.Id);
+                datos.SetearParametro("@nombre", user.Nombre != null ? user.Nombre : (object)DBNull.Value);
+                datos.SetearParametro("@apellido", user.Apellido != null ? user.Apellido : (object)DBNull.Value);
+                datos.SetearParametro("@imagen", user.UrlImagenPerfil != null ? user.UrlImagenPerfil : (object)DBNull.Value);
+
+                datos.EjecutarAccion();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+
+        public int InsertarNuevo(Usuario nuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.SetearConsulta("INSERT INTO USERS (email, pass, admin) OUTPUT inserted.Id VALUES (@email, @pass, 0)");
+
+                datos.SetearParametro("@email", nuevo.Email);
+                datos.SetearParametro("@pass", nuevo.Pass);
+                //ejecuto la acción y capturo el ID que devuelve la base de datos
+                return datos.EjecutarAccionScalar();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
             }
         }
     }

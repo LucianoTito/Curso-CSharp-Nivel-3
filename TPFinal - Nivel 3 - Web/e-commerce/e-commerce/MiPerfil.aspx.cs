@@ -14,6 +14,8 @@ namespace e_commerce
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+			pnlExito.Visible = false;
+
 			try
 			{
 				if(!IsPostBack)
@@ -32,7 +34,7 @@ namespace e_commerce
 
 					if(!string.IsNullOrEmpty(user.UrlImagenPerfil))
 					{
-						imgNuevoPerfil.ImageUrl = "~/Images/Perfiles" + user.UrlImagenPerfil;
+						imgNuevoPerfil.ImageUrl = "~/Images/Perfiles/" + user.UrlImagenPerfil + "?v=" + DateTime.Now.Ticks.ToString();
 					}
 				}
 
@@ -88,6 +90,8 @@ namespace e_commerce
 				negocio.ActualizarPerfil(user);
 
 				imgNuevoPerfil.ImageUrl = "~/Images/Perfiles/" + user.UrlImagenPerfil + "?V=" + DateTime.Now.Ticks.ToString();
+
+				pnlExito.Visible = true;
 
 			}
 			catch (Exception ex)

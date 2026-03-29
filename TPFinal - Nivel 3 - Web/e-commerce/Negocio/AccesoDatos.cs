@@ -79,6 +79,24 @@ namespace Negocio
             }
         }
 
+        public int EjecutarAccionScalar()
+        {
+            try
+            {
+                comando.Connection = conexion;
+                conexion.Open();
+
+                return (int)comando.ExecuteScalar();
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
              public void CerrarConexion()
         {
             // Si el lector existe y está abierto, lo cerramos

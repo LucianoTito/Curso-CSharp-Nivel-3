@@ -29,13 +29,16 @@
                 </li>
               </ul>
               
-              <%-- BOTONES DINÁMICOS --%>
+             <%-- BOTONES DINÁMICOS --%>
               <div class="d-flex align-items-center">
                   
                   <%-- Evaluo si hay sesion o no --%>
                   <% if (!Negocio.Seguridad.sesionActiva(Session["usuario"])) { %>
                       
                       <a href="Login.aspx" class="btn btn-outline-light me-2">Iniciar Sesión</a>
+                      
+                      <%-- NUEVO BOTÓN: Registro --%>
+                      <a href="Registro.aspx" class="btn btn-primary fw-bold">Registrarse</a>
                   
                   <% } else { %>
                       
