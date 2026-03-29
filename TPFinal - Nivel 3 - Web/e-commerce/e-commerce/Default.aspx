@@ -15,11 +15,19 @@
         </div>
     </div>
 
-    <%--  GRILLA DE TARJETAS --%>
+    <%-- CARTEL FLASH DE FAVORITOS --%>
+    <% if (Session["mensajeFav"] != null) { %>
+        <div class="alert alert-success alert-dismissible fade show text-center fw-bold shadow-sm" role="alert">
+            <%= Session["mensajeFav"].ToString() %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <%-- borro el mensaje de la memoria para que no vuelva a salir si el usuario aprieta F5 --%>
+        <% Session.Remove("mensajeFav"); %>
+    <% } %>
+<%--  GRILLA DE TARJETAS --%>
     <div class="row row-cols-1 row-cols-md-4 g-4 mb-5">
         
-        <% foreach (Dominio.Articulo art in ListaArticulos)
-           { %>
+        <% foreach (Dominio.Articulo art in ListaArticulos) { %>
             
             <div class="col">
                 <div class="card h-100 shadow-sm">
@@ -32,7 +40,28 @@
                         <p class="card-text flex-grow-1 text-muted"><%: art.Descripcion %></p>
                         <p class="card-text fs-5 text-success fw-bold">$ <%: art.Precio.ToString("N2") %></p>
                         
-                        <a href="Detalle.aspx?id=<%: art.Id %>" class="btn btn-primary mt-auto">Ver Detalles</a>
+                        <%-- Botonera inferior de la tarjeta --%>
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            
+                            <a href="Detalle.aspx?id=<%: art.Id %>" class="btn btn-primary w-100 me-2">Ver Detalles</a>
+                            
+                            <%-- Lógica de Favoritos --%>
+                            <% if (Negocio.Seguridad.sesionActiva(Session["usuario"])) { %>
+                                
+                                <% if (ListaFavoritosUsuario.Contains(art.Id)) { %>
+                                    <%-- ya es favorito: btn p/ quitar --%>
+                                    <a href="Default.aspx?idRm=<%: art.Id %>" class="btn btn-danger" title="Quitar de Favoritos">
+                                        ❤️
+                                    </a>
+                                <% } else { %>
+                                    <%-- no es favorito: btn rojo p/ agregar --%>
+                                    <a href="Default.aspx?idAdd=<%: art.Id %>" class="btn btn-outline-danger" title="Agregar a Favoritos">
+                                        🤍
+                                    </a>
+                                <% } %>
+
+                            <% } %>
+                        </div>
                     </div>
                 </div>
             </div>

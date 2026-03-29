@@ -222,7 +222,7 @@ namespace Negocio
             }
         }
 
-        private Articulo MapearArticulo (AccesoDatos datos)
+        public Articulo MapearArticulo (AccesoDatos datos)
         {
             Articulo aux = new Articulo();
 
