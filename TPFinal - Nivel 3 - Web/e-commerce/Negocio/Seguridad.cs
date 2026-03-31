@@ -9,10 +9,10 @@ namespace Negocio
 {
     public static class Seguridad
     {
-        // Método para saber si hay alguien logueado validando el objeto en sesión
+        // método para saber si hay alguien logueado validando el objeto en sesión
         public static bool sesionActiva (object user)
         {
-            Usuario usuario = user != null ? (Usuario)user : null; //La condición (user != null), si es verdadero lo transformamos, si es falso, estaba vacio y le asigno null a la variable
+            Usuario usuario = user != null ? (Usuario)user : null; //la condición (user != null), si es verdadero lo transformamos, si es falso, estaba vacio y le asigno null a la variable
 
 
             if (usuario != null && usuario.Id !=0)
@@ -24,7 +24,7 @@ namespace Negocio
                 return false;
             }
         }
-        //Método para saber si el usuario logueado tiene permisos de admin
+        //método para saber si el usuario logueado tiene permisos de admin
         public static bool esAdmin(object user)
         {
             Usuario usuario = user != null ? (Usuario)user : null;

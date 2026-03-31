@@ -92,7 +92,7 @@
         </div>
     </div>
 
-    <%--SCRIPT DE PREVISUALIZACIÓN Y VALIDACIÓN --%>
+    <%--script de previsualización y actualización --%>
     <script>
     
         function previsualizar(input) {

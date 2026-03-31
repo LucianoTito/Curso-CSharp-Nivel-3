@@ -13,7 +13,7 @@ namespace e_commerce
 
     {
 
-        //  Propiedad pública para guardar el artículo  y que el html lo pueda leer
+        
         public Articulo ArticuloSeleccionado {  get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {

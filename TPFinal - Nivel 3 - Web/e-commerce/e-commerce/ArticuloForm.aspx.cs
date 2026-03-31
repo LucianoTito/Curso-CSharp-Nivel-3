@@ -84,40 +84,103 @@ namespace e_commerce
         {
             try
             {
-                //Barrera para que no se metan urls demasiado largas
-                if (txtImagenUrl.Text.Length > 1000)
+                if (txtImagenUrl.Text.Length > 500)
                 {
-                    Session.Add("error", "La URL de la imagen es demasiado larga. Por favor, ingresá un enlace web tradicional (http/https) que no supere los 1000 caracteres.");
-                    Response.Redirect("Error.aspx", false);
-                    return; 
-                }
-
-                //Seguridad del servidor
-                if (string.IsNullOrEmpty(txtCodigo.Text) || string.IsNullOrEmpty(txtNombre.Text)|| string.IsNullOrEmpty(txtPrecio.Text))
-                {
-                    Session.Add("error", "Los campos Código, Nombre y Precio son estrictamente obligatorios.");
-                    Response.Redirect("Error.aspx", false);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alertaUrl", "alert('⚠️ La URL de la imagen es demasiado larga. Ingrese un enlace que no supere los 1000 caracteres.');", true);
                     return;
                 }
 
-                Articulo nuevo = new Articulo();    
+                
+                if (string.IsNullOrEmpty(txtCodigo.Text) || string.IsNullOrEmpty(txtNombre.Text) || string.IsNullOrEmpty(txtPrecio.Text))
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alertaVacios", "alert('⚠️ Los campos Código, Nombre y Precio son estrictamente obligatorios.');", true);
+                    return;
+                }
+
+                if (txtCodigo.Text.Length > 50)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alertaCodigoLargo", "alert('⚠️ El Código no puede superar los 50 caracteres.'); document.getElementById('txtCodigo').classList.add('is-invalid');", true);
+                    return;
+                }
+
+                if (txtNombre.Text.Length > 50)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alertaNombreLargo", "alert('⚠️ El Nombre no puede superar los 50 caracteres.'); document.getElementById('txtNombre').classList.add('is-invalid');", true);
+                    return;
+                }
+
+                if (txtDescripcion.Text.Length > 150)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alertaDescLarga", "alert('⚠️ La Descripción es demasiado larga (máximo 150 caracteres).'); document.getElementById('txtDescripcion').classList.add('is-invalid');", true);
+                    return;
+                }
+
+
+                decimal precioValidado;
+                if (!decimal.TryParse(txtPrecio.Text, out precioValidado) || precioValidado < 0)
+                {
+                    string scriptPrecio = "alert('⛔ El precio ingresado no es válido. No puede ser negativo.'); document.getElementById('txtPrecio').classList.add('is-invalid');";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alertaPrecio", scriptPrecio, true);
+                    return;
+                }
+
+                decimal codigoNumerico;
+                if (decimal.TryParse(txtCodigo.Text, out codigoNumerico) && codigoNumerico < 0)
+                {
+                    string scriptCodigoNeg = "alert('⛔ El código de artículo no puede ser un número negativo.'); document.getElementById('txtCodigo').classList.add('is-invalid');";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alertaCodigoNeg", scriptCodigoNeg, true);
+                    return;
+                }
+
                 ArticuloNegocio negocio = new ArticuloNegocio();
 
-                //paso los datos html a un obj 
+                // validar código duplicado 
+                List<Articulo> listaActual = negocio.Listar();
+                bool codigoExiste = false;
+                string codigoIngresado = txtCodigo.Text.Trim().ToUpper();
+
+                if (Request.QueryString["id"] != null)
+                {
+                    //busco si existe el código en otro artículo distinto al actual
+                    int idActual = int.Parse(Request.QueryString["id"]);
+                    codigoExiste = listaActual.Any(x => x.Codigo.ToUpper() == codigoIngresado && x.Id != idActual);
+                }
+                else
+                {
+                    //busco si existe el código en cualquier artículo
+                    codigoExiste = listaActual.Any(x => x.Codigo.ToUpper() == codigoIngresado);
+                }
+
+                if (codigoExiste)
+                {
+                    
+                    string scriptAviso = "alert('⛔ El Código de Artículo \\'" + txtCodigo.Text + "\\' ya se encuentra registrado. Por favor, ingrese un código único.');";
+                    scriptAviso += "document.getElementById('txtCodigo').classList.add('is-invalid');";
+
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alertaDuplicado", scriptAviso, true);
+
+                    return;
+                }
+
+                //fin de las validaciones
+
+                Articulo nuevo = new Articulo();
+
+                // paso los datos HTML a un objeto
                 nuevo.Codigo = txtCodigo.Text;
                 nuevo.Nombre = txtNombre.Text;
                 nuevo.Descripcion = txtDescripcion.Text;
                 nuevo.ImagenUrl = txtImagenUrl.Text;
-                nuevo.Precio = decimal.Parse(txtPrecio.Text);
+                nuevo.Precio = precioValidado;
 
-                //Instancio un objeto interno y le asigno el id del desplegable
+                // instancio objetos internos y asocio IDs de desplegables
                 nuevo.Marca = new Marca();
                 nuevo.Marca.Id = int.Parse(ddlMarca.SelectedValue);
 
                 nuevo.Categoria = new Categoria();
-                nuevo.Categoria.Id = int.Parse(ddlMarca.SelectedValue);
+                nuevo.Categoria.Id = int.Parse(ddlCategoria.SelectedValue);
 
-                //guardo el nvo o actualizo el existente?
+               //guardo o actualizo?
                 if (Request.QueryString["id"] != null)
                 {
                     nuevo.Id = int.Parse(Request.QueryString["id"]);
@@ -127,14 +190,13 @@ namespace e_commerce
                 {
                     negocio.AgregarArticulo(nuevo);
                 }
-                Response.Redirect("ArticulosLista.aspx", false);
 
+                Response.Redirect("ArticulosLista.aspx", false);
             }
             catch (Exception ex)
             {
                 Session.Add("error", "Error al intentar guardar el artículo: " + ex.Message);
-                Response.Redirect("Error.aspx", false );
-
+                Response.Redirect("Error.aspx", false);
             }
         }
 

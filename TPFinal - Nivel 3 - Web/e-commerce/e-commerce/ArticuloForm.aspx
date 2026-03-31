@@ -37,9 +37,9 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
+              <div class="mb-3">
                     <label for="txtPrecio" class="form-label fw-bold">Precio ($) <span class="text-danger">*</span></label>
-                    <asp:TextBox ID="txtPrecio" runat="server" CssClass="form-control" TextMode="Number" step="0.01" ClientIDMode="Static"></asp:TextBox>
+                    <asp:TextBox ID="txtPrecio" runat="server" CssClass="form-control" TextMode="Number" step="0.01" min="0" ClientIDMode="Static"></asp:TextBox>
                 </div>
 
                 <div class="mb-3">
@@ -65,7 +65,7 @@
                         <div class="mb-3">
                             <label for="txtImagenUrl" class="form-label fw-bold">URL de la Imagen</label>
 
-                            <%-- AutoPostBack="true" es clave acá para disparar el evento al cambiar el texto --%>
+                            
                             <asp:TextBox ID="txtImagenUrl" runat="server" CssClass="form-control" AutoPostBack="true" OnTextChanged="txtImagenUrl_TextChanged"></asp:TextBox>
                         </div>
                         
@@ -84,15 +84,33 @@
    <script>
        // función que evalúa y pinta los campos 
        function evaluarCampo(input) {
-           if (input.value.trim() === "") {
+           let valor = input.value.trim();
+           let esValido = true;
+
+           
+           if (valor === "") {
+               esValido = false;
+           }
+           
+           else if (input.id === "txtPrecio") {
+               if (Number(valor) < 0) esValido = false;
+           }
+           //no puede ser un número negativo aislado 
+           else if (input.id === "txtCodigo") {
+               // si es un número válido y es menor a 0, lo rechazo
+               if (!isNaN(valor) && Number(valor) < 0) esValido = false;
+           }
+
+           // pinto de rojo o verde
+           if (!esValido) {
                input.classList.add("is-invalid");
                input.classList.remove("is-valid");
-               return false;
            } else {
                input.classList.remove("is-invalid");
                input.classList.add("is-valid");
-               return true;
            }
+
+           return esValido;
        }
 
        // escucho cuando el DOM termina de cargar
@@ -126,15 +144,27 @@
            const txtNombre = document.getElementById("txtNombre");
            const txtPrecio = document.getElementById("txtPrecio");
 
-           // evaluo todos para que se pinten de rojo si están vacíos
+           // evaluo todos para que se pinten de rojo o verde
            let v1 = evaluarCampo(txtCodigo);
            let v2 = evaluarCampo(txtNombre);
            let v3 = evaluarCampo(txtPrecio);
 
            let esValido = v1 && v2 && v3;
 
+          
            if (!esValido) {
-               alert("Por favor, completá los campos obligatorios remarcados en rojo.");
+               let valorPrecio = txtPrecio.value.trim();
+               let valorCodigo = txtCodigo.value.trim();
+
+               if (valorPrecio !== "" && Number(valorPrecio) < 0) {
+                   alert("⛔ El precio no puede ser un número negativo. Por favor ingrese un número positivo");
+               }
+               else if (valorCodigo !== "" && !isNaN(valorCodigo) && Number(valorCodigo) < 0) {
+                   alert("⛔ El código de artículo no puede ser un número negativo. El código solo puede contener números positivos, además de letras (opcional).");
+               }
+               else {
+                   alert("⚠️ Por favor, completá correctamente los campos obligatorios remarcados en rojo.");
+               }
            }
 
            return esValido;

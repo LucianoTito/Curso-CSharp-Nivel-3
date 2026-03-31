@@ -99,13 +99,13 @@ namespace Negocio
 
              public void CerrarConexion()
         {
-            // Si el lector existe y está abierto, lo cerramos
+           
             if (lector != null && !lector.IsClosed)
             {
                 lector.Close();
             }
 
-            // Cerramos la conexión física al servidor
+          
             if (conexion.State == System.Data.ConnectionState.Open)
             {
                 conexion.Close();

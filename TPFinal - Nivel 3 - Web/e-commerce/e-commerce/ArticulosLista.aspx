@@ -18,7 +18,7 @@
 
     <asp:UpdatePanel ID="UpdatePanelFiltro" runat="server">
         <ContentTemplate>
-          <%-- FILTRO RÁPIDO Y CHECKBOX --%>
+          <%-- filtro rápido y chkBox --%>
             <div class="row mb-4 align-items-end">
                 <div class="col-md-6">
                     <asp:Label Text="Búsqueda Rápida:" runat="server" CssClass="form-label fw-bold" />
@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            <%--FILTRO AVANZADO con renderizado cond. --%>
+            <%--filtro avanzado con renderizado cond. --%>
             <% if (FiltroAvanzado) { %>
                 <div class="row mb-4 bg-light p-3 rounded border shadow-sm">
                    
@@ -78,7 +78,7 @@
             <% } %>
       
 
-            <%-- GRILLA DE DATOS  --%>
+            <%-- grilla de datos  --%>
             <div class="table-responsive shadow-sm rounded">
                 <asp:GridView ID="dgvArticulos" runat="server" CssClass="table table-striped table-hover table-bordered mb-0 align-middle" 
                     AutoGenerateColumns="false" DataKeyNames="Id" OnSelectedIndexChanged="dgvArticulos_SelectedIndexChanged">
